@@ -326,7 +326,6 @@ link[rel=&quot;stylesheet&quot;][type=&quot;text/css&quot;] { ... }
         <title>Разбираемся с функциями первого класса в Sass 3.5</title>
         <description>&lt;p&gt;&lt;i&gt;Данный материал является вольным переводом статьи: &lt;br /&gt;Kaelig &lt;a href=&quot;https://medium.com/@kaelig/sass-first-class-functions-6e718e2b5eb0/&quot;&gt;Making sense out of Sass 3.5 first-class functions&lt;/a&gt;&lt;/i&gt;&lt;/p&gt;
 
-
 &lt;p&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/1200/1*K7bBVfi4k9a7wUci_nCg-w.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Озадачены последней &lt;a href=&quot;http://blog.sass-lang.com/posts/809572-sass-35-release-candidate&quot;&gt;записью в блоге Sass Release Candidate&lt;/a&gt;? Я тоже.&lt;/p&gt;
@@ -556,7 +555,6 @@ h1 { content: call($foo, &#39;bar&#39;); }
         <title>Знакомство с debugger.html</title>
         <description>&lt;p&gt;&lt;i&gt;Данный материал является вольным переводом статьи: &lt;br /&gt;Bryan Clark &lt;a href=&quot;https://hacks.mozilla.org/2016/09/introducing-debugger-html/&quot;&gt;Introducing debugger.html&lt;/a&gt;&lt;/i&gt;&lt;/p&gt;
 
-
 &lt;p&gt;debugger.html — современный JavaScript отладчик от Mozilla, сделанный на &lt;a href=&quot;https://facebook.github.io/react/&quot;&gt;React&lt;/a&gt; и &lt;a href=&quot;http://redux.js.org/&quot;&gt;Redux&lt;/a&gt;. Проект начался в начале этого года в попытке заменить &lt;a href=&quot;https://developer.mozilla.org/en/docs/Tools&quot;&gt;Firefox Developer Tools&lt;/a&gt;. Помимо этого мы хотели сделать отладчик с возможностью отладки нескольких целей и функционирования в стандартном режиме.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2016/09/colla.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
@@ -626,7 +624,6 @@ open http://localhost:8000 - откройте в любом современно
       <item>
         <title>Первое десктопное приложение на HTML, JS и Electron</title>
         <description>&lt;p&gt;&lt;i&gt;Данный материал является вольным переводом статьи: &lt;br /&gt;Danny Markov &lt;a href=&quot;http://tutorialzine.com/2015/12/creating-your-first-desktop-app-with-html-js-and-electron/&quot;&gt;Creating Your First Desktop App With HTML, JS and Electron&lt;/a&gt;&lt;/i&gt;&lt;/p&gt;
-
 
 &lt;p&gt;Материал вычитывал: &lt;i&gt;Михаил Синяков&lt;/i&gt;&lt;/p&gt;
 
