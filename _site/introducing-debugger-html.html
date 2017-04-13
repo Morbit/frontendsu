@@ -1,0 +1,229 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Знакомство с debugger.html &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Новый отладчик от Mozilla построенный на React и Redux.">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://front-end.su/introducing-debugger-html">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201703150046" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Знакомство с debugger.html">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://front-end.su/introducing-debugger-html">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Знакомство с debugger.html" />
+    <meta name="twitter:description" content="Новый отладчик от Mozilla построенный на React и Redux." />
+    <meta name="twitter:url" content="http://front-end.su/introducing-debugger-html" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Знакомство с debugger.html</h1>
+  <span class="post-meta">Sep 18, 2016</span><br>
+    
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><i>Данный материал является вольным переводом статьи: <br />Bryan Clark <a href="https://hacks.mozilla.org/2016/09/introducing-debugger-html/">Introducing debugger.html</a></i></p>
+
+<p>debugger.html — современный JavaScript отладчик от Mozilla, сделанный на <a href="https://facebook.github.io/react/">React</a> и <a href="http://redux.js.org/">Redux</a>. Проект начался в начале этого года в попытке заменить <a href="https://developer.mozilla.org/en/docs/Tools">Firefox Developer Tools</a>. Помимо этого мы хотели сделать отладчик с возможностью отладки нескольких целей и функционирования в стандартном режиме.</p>
+
+<p><img src="https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2016/09/colla.png" alt="" /></p>
+
+<p>В данный момент debugger.html можно подключить к Firefox, а так же в экспериментальном режиме связать с Chrome и Node.  Отладчик подключается при помощи Mozilla’s <a href="https://wiki.mozilla.org/Remote_Debugging_Protocol">Remote Debug Protocol</a> (RDP) и взаимодействует с Node и Chrome используя <a href="https://developer.chrome.com/devtools/docs/debugger-protocol">Chrome’s RDP</a>.</p>
+
+<p>Проект debugger.html размещен на <a href="https://github.com/devtools-html/debugger.html">GitHub</a> и использует современные фреймворки и наборы инструментов, что делает его доступным и привлекательным для широкой аудитории разработчиков.</p>
+
+<h2 id="debuggerhtml">debugger.html</h2>
+<p>Пользовательский интерфейс разделён на три области: панель исходников, панель редактирования и правый сайдбар.</p>
+
+<ul>
+  <li><em>Панель исходников</em> показывает дерево всех исходников для отлаживаемого в данный момент приложения.</li>
+  <li><em>Панель редактирования</em> используется для отображения содержимого файлов исходников, установки брейкпоинтов и улучшения форматирования исходников.</li>
+  <li><em>Правый сайдбар</em> текущие установленные брейкпоинт, текущий вызов стека и области видимости переменных, когда отладчик находится в паузе
+    <ul>
+      <li>Отладчик поддерживает паузу, step over, step in, step out и запуск функций для отладки вашего JavaScript.</li>
+      <li>Панель вызова стека отображает фреймы <em>вызова стека</em> для состояний в паузе, а <em>панель областей видимости</em> показывает раскрываемое дерево переменных на основе выбранного фрейма.</li>
+    </ul>
+  </li>
+</ul>
+
+<p><img src="https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2016/09/debug.gif" alt="" /></p>
+
+<h2 id="section">Приступая к работе</h2>
+
+<p>Прежде чем приступить к работе с отладчиком вы должны получить код с GitHub и посмотреть <a href="https://github.com/devtools-html/debugger.html/blob/master/CONTRIBUTING.md#getting-started">руководство к началу работы</a>.</p>
+
+<p>Если вы хотите сразу приступить к работе, выполните следующие команды:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>npm install - установите зависимости
+npm start - запустите сервер разработки
+open http://localhost:8000 - откройте в любом современном браузере
+</code></pre>
+</div>
+
+<p>После того как вы открыли отладчик в браузере главная страница отладчика будет отображать список целей для отладки, которые мы можете выбрать. Для того чтобы подключить отладчик и начать работу, цель должна быть запущена с возможностью удаленной отладки. Обычно это требует установки нескольких флагов. Например, если вы хотите запустить Firefox на MacOS вы должен включить отладку с помощью следующей команды.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ /Applications/Firefox.app/Contents/MacOS/firefox-bin –start-**debugger**-server 6080 -P development
+</code></pre>
+</div>
+
+<p>Другие опции для Chrome и Firefox вы можете найти <a href="https://github.com/devtools-html/debugger.html/blob/master/docs/remotely-debuggable-browsers.md#">здесь</a>.</p>
+
+<p>Отладка Node требует наличия у вас версии <a href="https://nodejs.org/en/blog/release/v6.3.0/">6.3.0</a> или выше. Node вы должны запускать со специальным флагом. Например, если вы хотите отлаживать <code class="highlighter-rouge">myserver.js</code> вы должны использовать следующую команду.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>$ node –inspect myserver.js
+</code></pre>
+</div>
+
+<p>Больше информации вы можете получить <a href="https://github.com/devtools-html/debugger.html/blob/master/CONTRIBUTING.md#getting-started">в руководстве к началу работы</a>.</p>
+
+<h2 id="firefox-developer-tools">Firefox Developer Tools</h2>
+<p>Мы интегрируем отладчик в Developer Tools для Firefox. Первая итерация закончена и включена в ночную сборку. Вы можете попробовать отладчик там.</p>
+
+<p><img src="https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2016/09/jsfiddle.png" alt="" /></p>
+
+<h2 id="section-1">Примите участие</h2>
+
+<p>Как уже упоминалось выше, проект находится в разработке, мы будем благодарны за вашу помощь в создании, возможно, лучшего отладчика. Если вы хотите присоединиться к нам, пожалуйста, ознакомьтесь с <a href="https://github.com/devtools-html/debugger.html/blob/master/CONTRIBUTING.md">руководством контрибьютера</a>.</p>
+
+</article>
+
+
+
+
+
+
+  <hr>
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>

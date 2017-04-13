@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Почему нет никакого CSS4? Разбираемся с CSS Levels &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Разбираемся с версионированием в CSS">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://front-end.su/why-there-is-no-css4">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201703150046" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Почему нет никакого CSS4? Разбираемся с CSS Levels">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://front-end.su/why-there-is-no-css4">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Почему нет никакого CSS4? Разбираемся с CSS Levels" />
+    <meta name="twitter:description" content="Разбираемся с версионированием в CSS" />
+    <meta name="twitter:url" content="http://front-end.su/why-there-is-no-css4" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Почему нет никакого CSS4? Разбираемся с CSS Levels</h1>
+  <span class="post-meta">Sep 27, 2016</span><br>
+    
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><i>Данный материал является вольным переводом статьи: <br />Rachel Andrew <a href="https://www.rachelandrew.co.uk/archives/2016/09/13/why-there-is-no-css4-explaining-css-levels/">Why there is no CSS4 - explaining CSS Levels</a></i></p>
+
+<p>У нас были CSS1 и CSS2. У нас даже был CSS 2.1, который сразу перешёл в CSS3. Или это мы перешли? Этот пост — краткое объяснение того, как CSS версионируется сегодня.</p>
+
+<p>CSS версий 1 и 2 были монолитными спецификациями. Все, что касалось CSS было включено в один большой документ. Селекторы, позиционирование, цвета — всё было там.</p>
+
+<p>Проблема монолитной спецификации в том, что для того чтобы её закончить, каждый входящий в неё элемент должен быть завершён. CSS стал сложнее, добавились новые функции.
+Больше нет смысла создавать черту, которая будет останавливать работу над всеми частями CSS только для того, чтобы объявить, что очередная версия закончена. Поэтому после версии 2.1 спецификация была разделена на модули. Так как модули включали в себя все то, что было раньше, плюс добавились новые возможности — все они вышли на третий уровень. Следовательно, люди вроде меня, которые понимали CSS как единую спецификацию, называют модули третьего уровня как CSS 3.</p>
+
+<p>Пока мы относимся ко всему новому в CSS как к CSS 3, работающему не в полную силу, это не будет отражать реальность того, где находится CSS сейчас. Если вы читали что-то о селекторах в CSS 3, то фактически описанное является частью спецификации <a href="https://www.w3.org/TR/css3-selectors/">CSS Selectors Level 3</a>. На самом деле CSS Selectors является одной из спецификаций, отмеченных как завершенная и рекомендуемая.
+В данный момент рабочая группа по CSS работает над <a href="https://drafts.csswg.org/selectors-4/">Selectors Level 4</a> с новыми предложенными функциями, а также возможностями которые были частью третьего уровня (а также CSS 1 и 2).
+Это <a href="https://www.w3.org/TR/CSS/#css-level-4">не CSS 4</a>, но спецификация 4-го уровня единой спецификации. Одна небольшая часть.</p>
+
+<p>Также есть спецификации возможностей, которые никогда не были частью CSS 1 или 2 и поэтому они относятся к первому уровню. Они являются совершенно новыми. К примеру, к первому уровню относятся спецификации <a href="https://drafts.csswg.org/css-grid/">CSS Grid Layout</a> и <a href="https://www.w3.org/TR/css-flexbox-1/">Flexbox</a>. Flexbox и Grid находятся в статусе Candidate Recommendation (CR).Поэтому любые новые возможности, которые предлагаются в данный момент, вероятно, в итоге попадут на следующий уровень этих спецификаций – Flexbox Level 2 и CSS Grid Level 2.</p>
+
+<p>Если вы хотите посмотреть состояние тех или иных возможностей и их уровень,  можете сделать это в документе <a href="https://www.w3.org/Style/CSS/current-work">Current Work</a>. Чтобы разобраться в различных статусах, советуем обратиться <a href="https://www.w3.org/2005/10/Process-20051014/tr#maturity-levels">к этому документу</a>.</p>
+
+</article>
+
+
+
+
+
+
+  <hr>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>

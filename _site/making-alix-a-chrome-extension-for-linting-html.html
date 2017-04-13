@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Создание Alix, Chrome-расширения для линтинга HTML &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Продолжение статьи про линтинг HTML от Ire Aderinokun">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://front-end.su/making-alix-a-chrome-extension-for-linting-html">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201703150046" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Создание Alix, Chrome-расширения для линтинга HTML">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://front-end.su/making-alix-a-chrome-extension-for-linting-html">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Создание Alix, Chrome-расширения для линтинга HTML" />
+    <meta name="twitter:description" content="Продолжение статьи про линтинг HTML от Ire Aderinokun" />
+    <meta name="twitter:url" content="http://front-end.su/making-alix-a-chrome-extension-for-linting-html" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Создание Alix, Chrome-расширения для линтинга HTML</h1>
+  <span class="post-meta">Mar 15, 2017</span><br>
+    
+  <span class="post-meta small">
+  
+    4 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><i>Данный материал является вольным переводом статьи: <br />Ire Aderinokun <a href="https://bitsofco.de/making-alix-a-chrome-extension-for-linting-html/">Making Alix, a Chrome Extension for Linting HTML</a></i></p>
+
+<p>На прошлой неделе я написала о том, как вы можете <a href="https://bitsofco.de/linting-html-using-css/">использовать CSS селекторы для линтинга HTML</a>. Идея этой концепции заключалась в том, что мы можем использовать некоторые продвинутые селекторы, такие как <code class="highlighter-rouge">:not()</code> чтобы выбрать определенные типы элементов на странице. Например, мы можем выбрать все изображения, у которых нет альтернативного текста, и применить к ним стиль, чтобы выделить их на странице.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>img:not([alt]) {  
+    border: 5px solid red;
+}
+
+/* Add an error message */
+img:not([alt])::after {  
+   content: "Images must have an alt attribute";
+}
+</code></pre>
+</div>
+
+<p>После написания этой статьи я обнаружила, что <a href="http://heydonworks.com/revenge_css_bookmarklet/">множество</a> <a href="http://disq.us/url?url=http://archive.oreilly.com/pub/a/network/2000/07/21/magazine/css_tool.html:q4ix0_OUH1ABT47phcu1age-5Tw&amp;cuid=3490249">других</a> <a href="https://disq.us/url?url=https://mathiasbynens.be/notes/css-hidden-elements:icJwuKHh3fzutZrF7QzsaC0z6Zg&amp;cuid=3490249">людей</a> уже использовали эту идею. Лучшим решением среди найденных, оказался <a href="http://ffoodd.github.io/a11y.css/">a11y.css</a> созданный <a href="https://twitter.com/ffoodd_fr"> Gaël Poupard</a>. Поэтому я решила воспользоваться его наработками.</p>
+
+<p>Чтобы всем было удобно пользоваться я решила сделать расширение для браузера (Chrome).</p>
+
+<video autoplay="" loop="" muted="" playsinline="" poster="http://res.cloudinary.com/ireaderinokun/image/upload/v1488961489/demo-chrome_cuswu1.jpg" width="780">  
+    <source type="video/webm" src="http://res.cloudinary.com/ireaderinokun/image/upload/v1488961489/demo-chrome_cuswu1.webm" />
+    <img src="http://res.cloudinary.com/ireaderinokun/image/upload/v1488961489/demo-chrome_cuswu1.jpg" />
+</video>
+
+<p>При помощи расширения легко применить таблицу стилей к любой странице. Вот как я это сделала.</p>
+
+<h3 id="chrome-">Объявление расширения Chrome: Манифест</h3>
+
+<p>Первое, что нам нужно сделать, при создании расширения для Chrome — создать манифест-файл. Работает это так же как в случае когда мы создаем манифест-файл для прогрессивного веб приложения (PWA прим. переводчика). Файл включает в себя различную информацию, по которой Chrome определяет, что должно делать расширение и какие разрешения ему для этого необходимы.</p>
+
+<p>Это файл <code class="highlighter-rouge">manifest.json</code> для Alix —</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code><span class="p">{</span><span class="w">
+  </span><span class="nt">"manifest_version"</span><span class="p">:</span><span class="w"> </span><span class="mi">2</span><span class="p">,</span><span class="w">
+
+  </span><span class="nt">"name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Alix for Chrome"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"short_name"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Alix"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"description"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Lorem ipsum"</span><span class="p">,</span><span class="w">
+  </span><span class="nt">"version"</span><span class="p">:</span><span class="w"> </span><span class="s2">"1.1"</span><span class="p">,</span><span class="w">
+
+  </span><span class="nt">"permissions"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+      </span><span class="s2">"activeTab"</span><span class="w">
+  </span><span class="p">],</span><span class="w">
+
+  </span><span class="nt">"browser_action"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+    </span><span class="nt">"default_title"</span><span class="p">:</span><span class="w"> </span><span class="s2">"Toggle Alix"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"default_popup"</span><span class="p">:</span><span class="w"> </span><span class="s2">"popup/index.html"</span><span class="p">,</span><span class="w">
+    </span><span class="nt">"default_icon"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"19"</span><span class="p">:</span><span class="w"> </span><span class="s2">"images/toolbar-chrome.png"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"38"</span><span class="p">:</span><span class="w"> </span><span class="s2">"images/toolbar-chrome@2x.png"</span><span class="w">
+    </span><span class="p">}</span><span class="w">
+  </span><span class="p">},</span><span class="w">
+
+  </span><span class="nt">"icons"</span><span class="p">:</span><span class="w"> </span><span class="p">{</span><span class="w">
+      </span><span class="nt">"128"</span><span class="p">:</span><span class="w"> </span><span class="s2">"icon_128.png"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"16"</span><span class="p">:</span><span class="w"> </span><span class="s2">"icon_16.png"</span><span class="p">,</span><span class="w">
+      </span><span class="nt">"48"</span><span class="p">:</span><span class="w"> </span><span class="s2">"icon_48.png"</span><span class="w">
+   </span><span class="p">},</span><span class="w">
+
+  </span><span class="nt">"web_accessible_resources"</span><span class="p">:</span><span class="w"> </span><span class="p">[</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-en_advice.css"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-en_error.css"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-en_obsolete.css"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-en_warning.css"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-fr_advice.css"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-fr_error.css"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-fr_obsolete.css"</span><span class="p">,</span><span class="w">
+    </span><span class="s2">"a11y.css/a11y-fr_warning.css"</span><span class="w">
+  </span><span class="p">]</span><span class="w">
+</span><span class="p">}</span><span class="w">
+</span></code></pre>
+</div>
+
+<p>Давайте разберемся, что обозначают некоторые опции —</p>
+
+<p><code class="highlighter-rouge">manifest_version</code>:   версия формата файла манифеста, требуемого расширением. Для Chrome 18 требуется версия 2.</p>
+
+<p><code class="highlighter-rouge">permissions</code>: разрешения, которые запрашивает ваше расширение. Alix требует только доступ к той вкладке, которая активна в данный момент.</p>
+
+<p><code class="highlighter-rouge">browser_action</code> помещает иконку на главную панель Chrome и определяет действие при клике по значку.</p>
+
+<p><code class="highlighter-rouge">default_title</code>: тайтл для значка на панели
+<code class="highlighter-rouge">default_popup</code>: html страница, которая отобразится при клике на значок.</p>
+
+<p><code class="highlighter-rouge">web_accessible_resources</code>:  массив путей к ресурсам, которые могут использоваться на странице.</p>
+
+<h2 id="section">Создание всплывающего окна</h2>
+
+<p><img src="https://bitsofco.de/content/images/2017/03/Screen-Shot-2017-03-08-at-09.32.02.png" alt="" /></p>
+
+<p>Всплывающее окно это просто html страница, указанная в манифест-файле в <code class="highlighter-rouge">browser_action/default_popup</code>. Эта страница, по умолчанию, будет запускаться при клике на значок.</p>
+
+<p>С этой страницей мы можем делать все, что захотим, как с обычной html страницей.</p>
+
+<h2 id="a11ycss">Добавляем таблицу стилей a11y.css</h2>
+
+<p>Наконец, нам нужно применить к текущей активной вкладке таблицу стилей <code class="highlighter-rouge">a11y.css</code>. Для этого должен быть запущен скрипт, который создаст на странице элемент <code class="highlighter-rouge">&lt;link rel="stylsheet"&gt;</code> указывающий на необходимую таблицу стилей.</p>
+
+<p>Для выполнения скрипта мы воспользуемся методом <code class="highlighter-rouge">chrome.tabs.executeScript()</code>. ​Этот метод принимает объект с несколькими параметрами. В нашем случае параметром выступит константа со строкой, содержащей код, который мы хотим выполнить.</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>function addStylesheet() {
+
+    // Get file path based on language and level options from form
+    const file = `/a11y.css/a11y-${options.language}_${options.level}.css`;
+
+    const code = `
+        var stylesheet = document.createElement("link");
+        stylesheet.rel = "stylesheet";
+        stylesheet.href = chrome.extension.getURL("${file}");
+        stylesheet.id = "a11yCSS";
+        document.getElementsByTagName("head")[0].appendChild(stylesheet);
+    `;
+
+    // Execute script on active tab
+    chrome.tabs.executeScript({code: code});
+}
+</code></pre>
+</div>
+
+<p>Если мы откроем инспектор элементов, то увидим, что таблица стилей добавлена как последний элемент в секции head.</p>
+
+<p><img src="https://bitsofco.de/content/images/2017/03/Screen-Shot-2017-03-08-at-09.35.23.png" alt="" /></p>
+
+<p>То что нужно! Как всегда, вы можете посмотреть <a href="https://github.com/ireade/alix">исходный код</a> или установить расширение из <a href="https://chrome.google.com/webstore/detail/alix-for-chrome/aepmadgjacfjcneccddiccnkbpimobge">магазина Chrome</a>.</p>
+
+<p>Спасибо <a href="https://twitter.com/ffoodd_fr">Gaël Poupard</a> за созданный им <a href="http://ffoodd.github.io/a11y.css/">a11y.css</a>!</p>
+
+</article>
+
+
+
+
+
+
+  <hr>
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>

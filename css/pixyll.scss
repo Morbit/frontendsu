@@ -1,0 +1,120 @@
+---
+# The scss file which include files from _sass/
+---
+@charset "utf-8";
+
+/*!
+* Pixyll - A simple, beautiful Jekyll theme that's mobile first.
+* @author John Otander <johnotander@gmail.com> (http://johnotander.com/)
+* @link https://github.com/johnotander/pixyll
+* @license MIT
+*/
+
+@import 'variables';
+
+@import 'basscss';
+
+@import 'base';
+
+@import 'links';
+@import 'positions';
+@import 'clearfix';
+@import 'code';
+@import 'forms';
+@import 'typography';
+@import 'header';
+@import 'tables';
+@import 'animations';
+@import 'tables';
+@import 'footer';
+@import 'social-icons';
+@import 'blockquotes';
+@import 'posts';
+@import 'media-queries';
+@import 'gists';
+@import 'measure';
+@import 'pagination';
+
+[main] {
+    float: left;
+    width: 70%;
+    clear: left;
+}
+
+[main]+[aside] {
+    float: right;
+    clear: right;
+    text-align: left;
+    width: 24%;
+    margin-left: 4%;
+    margin-top: .15em;
+    padding-left: 1em;
+    position: relative;
+
+    font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
+    opacity: .69;
+    font-size:70%;
+}
+[main]+[aside]+* {
+    clear: left;
+}
+
+[main]+[aside]+h1, [main]+[aside]+h2, [main]+[aside]+h3, [main]+[aside]+h4, [main]+[aside]+h5, [main]+[aside]+h6 {
+    clear: left;
+    padding-top: 50px;
+}
+
+.hljs {
+	background: inherit!important;
+}
+
+h1, h2, h3, h4, h5, h6 {
+	margin-top: 50px;
+}
+
+h1, h2, h3, h4, h5, h6 {margin-bottom: 1.2em;}
+
+pre {
+	margin-top: 2em;
+	padding: 0 1.125em;
+}
+
+.main-img {
+	margin-bottom: 2em;
+}
+
+p{
+	font-size: 0.85rem;
+	line-height: 1.7;
+}
+
+li {
+    font-size: 0.85rem;
+    margin-bottom: 0.7em;
+}
+
+body {
+	font-family: Helvetica, Arial, sans-serif;
+}
+
+a:link, a.novisited:visited, .novisited a:visited {
+    color: #0c4f72;
+}
+
+a {
+	text-decoration: none;
+	border-bottom: 1px solid rgba(12, 79, 114, 0.2);
+}
+
+a:hover {
+	border-bottom: 1px solid rgba(12, 79, 114, 0.2);
+}
+
+img {
+    border: 1px solid #dedede;
+}
+
+pre {
+    line-height: 2;
+    font-size: 15px;
+}

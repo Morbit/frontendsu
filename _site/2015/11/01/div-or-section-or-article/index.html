@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Секции для контента в HTML5 — div или section или article? &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Если вы не знаете что выбрать section или article, какой тег лучше подходит для семантической разметки контента, в чем разница между div и section, то этот материал для вас.">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://front-end.su/2015/11/01/div-or-section-or-article/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201703150046" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Секции для контента в HTML5 — div или section или article?">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://front-end.su/2015/11/01/div-or-section-or-article/">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Секции для контента в HTML5 — div или section или article?" />
+    <meta name="twitter:description" content="Если вы не знаете что выбрать section или article, какой тег лучше подходит для семантической разметки контента, в чем разница между div и section, то этот материал для вас." />
+    <meta name="twitter:url" content="http://front-end.su/2015/11/01/div-or-section-or-article/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Секции для контента в HTML5 — div или section или article?</h1>
+  <span class="post-meta">Nov 1, 2015</span><br>
+    
+  <span class="post-meta small">
+  
+    4 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><i>Данный материал является вольным переводом статьи: <br />Ire Aderinokun <a href="http://bitsofco.de/2015/sectioning-content-in-html5/">SECTIONING CONTENT IN HTML5 - DIV OR SECTION OR ARTICLE?</a></i></p>
+
+<p><img src="/images/div-section-article-main.png" class="main-img" /></p>
+
+<p>HTML5 стал важной ступенькой для концепции семантического кода. Он отстаивает идею, что документ должен быть структурирован и используемые вами теги должны передавать смысл.</p>
+
+<p>Помимо прочего, теги <code class="highlighter-rouge">&lt;section&gt;</code> и <code class="highlighter-rouge">&lt;article&gt;</code> были введены чтобы сделать области с контентом более значимыми, чем просто <code class="highlighter-rouge">&lt;div&gt;</code>. Но в каком случае мы должны использовать эти новые элементы и когда обычный <code class="highlighter-rouge">&lt;div&gt;</code> предпочтительнее?</p>
+
+<h2 id="section">Обзор элементов</h2>
+
+<h3 id="div">DIV</h3>
+
+<p>Элемент <code class="highlighter-rouge">&lt;div&gt;</code> является элементом общего назначения. Но это не имеет особого смысла. Его цель заключается в группировке контента, который семантически не связан между собой. По сути, это совершенно бессмысленно для скрин ридеров, поэтому пользоваться данным методом нужно с осторожностью.</p>
+
+<blockquote><p>Мы настоятельно рекомендуем обращаться к элементу div только в крайнем случае, когда больше никакие другие элементы не подходят.</p></blockquote>
+
+<p class="right"><i>Рекомендация W3C</i></p>
+<div class="clearfix"></div>
+
+<p>Элемент <code class="highlighter-rouge">&lt;div&gt;</code> в основном используется для группировки контента и и позиционирования при помощи CSS. Например, как контейнер для других элементов.</p>
+
+<pre>
+<code class="html">
+&lt;div class=&quot;modal-container&quot;&gt;<br />  &lt;section class=&quot;modal&quot;&gt;<br />    &lt;h1&gt;Modal Title&lt;/h1&gt;<br />    &lt;p&gt;Text goes here&lt;/p&gt;<br />  &lt;/section&gt;<br />&lt;/div&gt;
+</code>
+</pre>
+
+<h3 id="section-1">SECTION</h3>
+
+<p>Элемент <code class="highlighter-rouge">&lt;section&gt;</code> является немного более конкретным, чем элемент <code class="highlighter-rouge">&lt;div&gt;</code>. Он применяется к общему разделу контента, который может быть сгруппирован семантически.</p>
+
+<blockquote><p>Главное правило заключается в том, что элемент section уместно использовать только тогда, когда его содержимое может быть явно  сгруппировано.</p></blockquote>
+<p class="right"><i>Рекомендация W3C</i></p>
+<div class="clearfix"></div>
+
+<p>Поскольку содержимое тега <code class="highlighter-rouge">&lt;section&gt;</code> имеет смысл только когда сгруппировано вместе, оно должно иметь «тему». «Тема» должна быть определена путем включения заголовка в содержимое, часто сразу после открывающего тега.</p>
+
+<pre>
+<code class="html">
+&lt;section class=&quot;newsletter&quot;&gt;<br /><br />  &lt;h1&gt;Subscribe to the Newsletter&lt;/h1&gt;<br /><br />  &lt;form&gt; &lt;!-- ... --&gt; &lt;/form&gt;<br />&lt;/section&gt;
+</code>
+</pre>
+
+<h2 id="article">ARTICLE</h2>
+
+<p>Тег <code class="highlighter-rouge">&lt;article&gt;</code> является даже более конкретным, чем тег <code class="highlighter-rouge">&lt;section&gt;</code>. Он так же применяется к семантически связанному разделу контента и должен иметь заголовок. Тем не менее его содержимое должно быть самодостаточным. Это означает что будучи изолированным от остальной части страницы оно по прежнему должно иметь смысл.</p>
+
+<p>Цель тега <code class="highlighter-rouge">&lt;article&gt;</code> в маркировке контента, например, в разметке блога.</p>
+
+<pre>
+<code class="html">
+&lt;article class=&quot;post&quot;&gt;<br />  &lt;h1&gt;Article Title&lt;/h1&gt;<br />  &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit...&lt;/p&gt;<br />  &lt;p&gt;Quae similitudo in genere etiam humano apparet. Est, ut dicis, inquam...&lt;/p&gt;<br />&lt;/article&gt;
+</code>
+</pre>
+
+<h2 id="div--section--article">DIV или SECTION или ARTICLE?</h2>
+
+<h3 id="section-2">Так какой из тегов когда нужно использовать?</h3>
+
+<p>Если содержимое не является семантически связанным, стоит использовать <code class="highlighter-rouge">&lt;div&gt;</code>. Если семантически связанное содержимое может быть автономным, то используйте тег <code class="highlighter-rouge">&lt;article&gt;</code>. В противном случае используйте <code class="highlighter-rouge">&lt;section&gt;</code>.</p>
+
+<p><img src="/images/div-section-article.png" style="display: block; margin: auto;" /></p>
+
+<h2 id="section-3">Комбинирование элементов</h2>
+
+<p>Попытаемся объединить различные элементы вместе.</p>
+
+<h3 id="article--article">Article в article</h3>
+
+<p>Элементы article можно вкладывать друг в друга. И хотя они по прежнему являются самодостаточными, предполагается, что содержимое внутреннего <code class="highlighter-rouge">&lt;article&gt;</code> связано с внешним.</p>
+
+<pre>
+<code class="html">
+&lt;article&gt;<br /><br />  &lt;h1&gt;Article Title&lt;/h1&gt;<br /><br />  &lt;p class=&quot;author&quot;&gt;John Smith&lt;/p&gt;<br /><br /><br />  &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p&gt;<br /><br /><br />  &lt;article&gt;<br /><br />    &lt;h2&gt;Another Article&lt;/h2&gt;<br /><br />    &lt;p class=&quot;author&quot;&gt;Jane Doe&lt;/p&gt;<br /><br /><br />    &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p&gt;<br /><br />  &lt;/article&gt;<br /><br /><br />  &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&lt;/p&gt;<br />&lt;/article&gt;
+</code>
+</pre>
+
+<h3 id="article--section">Article в section</h3>
+
+<p>Мы можем так же несколько тегов <code class="highlighter-rouge">&lt;article&gt;</code> разместить внутри <code class="highlighter-rouge">&lt;section&gt;</code>. Хорошим примером будет являться страница блога, на которой отображаются последние сообщения. Контейнером для всех последних постов будет тег <code class="highlighter-rouge">&lt;section&gt;</code>, в то время как каждый отдельный отрывок записи может быть размечен тегом <code class="highlighter-rouge">&lt;article&gt;</code>.</p>
+
+<pre>
+<code class="html">
+&lt;section&gt;<br /><br />  &lt;h1&gt;Latest Blog Posts&lt;/h1&gt;<br /><br />  &lt;article&gt;<br /><br />    &lt;h2&gt;Blog Post Title&lt;/h2&gt;<br /><br />    &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &lt;/p&gt;<br /><br />  &lt;/article&gt;<br /><br />  &lt;article&gt;<br /><br />    &lt;h2&gt;Blog Post Title&lt;/h2&gt;<br /><br />    &lt;p&gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &lt;/p&gt;<br /><br />  &lt;/article&gt;<br />&lt;/section&gt;
+</code>
+</pre>
+
+<h3 id="section--article">Section в article</h3>
+
+<p>Каждый индивидуальный тег <code class="highlighter-rouge">&lt;article&gt;</code> может содержать в себе раздел section.  Например, данный пост мог бы быть размечен следующим образом</p>
+
+<pre>
+<code class="html">
+&lt;article&gt;<br />  &lt;h1&gt;Sectioning Content in HTML5 - div or section or article?&lt;/h1&gt;<br /><br />  &lt;section&gt;<br />    &lt;h2&gt;Overview of the Elements&lt;/h2&gt;<br />    &lt;section&gt;<br />      &lt;h3&gt;div&lt;/h3&gt;<br />      &lt;p&gt;The div element is the most general purpose element.&lt;/p&gt;<br />    &lt;/section&gt;<br />    &lt;section&gt;<br />      &lt;h3&gt;section&lt;/h3&gt;<br />      &lt;p&gt;The section element is slightly more specific that a div&lt;/p&gt;<br />    &lt;/section&gt;<br />    &lt;section&gt;<br />      &lt;h3&gt;article&lt;/h3&gt;<br />      &lt;p&gt;The article element is even more specific than a section&lt;/p&gt;<br />    &lt;/section&gt;<br />  &lt;/section&gt;<br /><br />  &lt;section&gt;<br />    &lt;h2&gt;div or section or article?&lt;/h2&gt;<br />    &lt;!-- ... --&gt;<br />  &lt;/section&gt;<br /><br />  &lt;section&gt;<br />    &lt;h2&gt;Combining the Elements&lt;/h2&gt;<br />    &lt;!-- ... --&gt;<br />  &lt;/section&gt;<br /><br />&lt;/article&gt;
+</code>
+</pre>
+
+</article>
+
+
+
+
+
+
+  <hr>
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>
