@@ -10,11 +10,11 @@
     
     <meta name="keywords" content=""/>
     
-    <link rel="canonical" href="http://front-end.su/2016/02/12/load-events/">
+    <link rel="canonical" href="http://localhost:4000/2016/02/12/load-events/">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201704131205" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201704281430" type="text/css">
 
     
     <meta name='yandex-verification' content='7f003fb272100188' />
@@ -26,7 +26,7 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="$(document).ready vs $(window).load vs window.onload">
     <meta property="og:description" content="front-end разработка в деталях">
-    <meta property="og:url" content="http://front-end.su/2016/02/12/load-events/">
+    <meta property="og:url" content="http://localhost:4000/2016/02/12/load-events/">
     <meta property="og:site_name" content="front-end.su">
 
     <!-- Twitter Card -->
@@ -34,7 +34,7 @@
     
     <meta name="twitter:title" content="$(document).ready vs $(window).load vs window.onload" />
     <meta name="twitter:description" content="Чем отличается document ready от window load? Как сделать document ready без jquery? Эти и другие животрепещащие вопросы в материале под катом." />
-    <meta name="twitter:url" content="http://front-end.su/2016/02/12/load-events/" />
+    <meta name="twitter:url" content="http://localhost:4000/2016/02/12/load-events/" />
 
     <!-- Icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -63,7 +63,7 @@
     <header class="site-header px2 px-responsive">
   <div class="mt2 wrap">
     <div class="measure">
-      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <a href="http://localhost:4000" class="site-title">front-end.su</a>
       <nav class="site-nav">
         <a href="http://fronthub.ru">Конференция FrontHub</a>
 <a href="/contact/">Контакты</a>
@@ -107,7 +107,7 @@
 
 <p><img src="/images/load-events.png" class="main-img" /></p>
 
-<h2 id="documentready">$(document).ready</h2>
+<p>##$(document).ready</p>
 
 <p>Длительное время мы использовали <code class="highlighter-rouge">'$(document).ready'</code> работая с jQuery. Написанный таким образом код начнёт выполняться сразу после того, как будет готов DOM, за исключением картинок. Указанный код будет выполняться непосредственно после готовности DOM, не дожидаясь полной загрузки изображений. Вызов <code class="highlighter-rouge">$(document).ready</code> несколько раз приведет к последовательному исполнению вызовов друг за другом. Существуют ещё несколько вариантов записи.</p>
 
@@ -139,7 +139,7 @@ jQuery(document).ready(function(){
 </code>
 </pre>
 
-<h2 id="windowload">$(window).load</h2>
+<p>##$(window).load</p>
 
 <p>Если мы говорим о <code class="highlighter-rouge">$(window).load</code> то код, написанный внутри такой конструкции, начнёт работу когда будет готов весь DOM включая изображения. Такой вызов подойдёт если мы хотим работать с изображениями (расчёт размеров изображения). Данный вызов, как и предыдущий является jQuery событием. Если на нашей странице есть изображения, то сначала мы дождёмся загрузки их всех, а потом будет вызван код.</p>
 
@@ -160,7 +160,7 @@ $("#elementid").load( "data.html" );
 </code>
 </pre>
 
-<h2 id="windowonload">window.onload</h2>
+<p>##window.onload</p>
 
 <p>Событие onload является стандартным событием в DOM, а описанные выше решения работают только при наличии библиотеки jQuery. Данный вариант имеет такую же функциональность как <code class="highlighter-rouge">$(window).load</code>, но является встроенным JavaScript событием. Событие onload происходит, когда объект был загружен. Мы можем сделать такой вызов непосредственно из тега. Например, разместив его в теге изображения и как только оно будет загружено произойдёт вызов события.</p>
 

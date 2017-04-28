@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Заметка: Первое впечатление о reselect для redux &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Продолжение статьи про линтинг HTML от Ire Aderinokun">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://localhost:4000/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201704281430" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Заметка: Первое впечатление о reselect для redux">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://localhost:4000/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Заметка: Первое впечатление о reselect для redux" />
+    <meta name="twitter:description" content="Продолжение статьи про линтинг HTML от Ire Aderinokun" />
+    <meta name="twitter:url" content="http://localhost:4000/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://localhost:4000" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Заметка: Первое впечатление о reselect для redux</h1>
+  <span class="post-meta">Mar 15, 2017</span><br>
+    
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Всем привет, меня зовут <a href="https://twitter.com/pvpshoot">Миша</a>, и автор этого блога сподвиг меня написать сюда заметку, которой я поделился в нашем фронтенд чатике слака.
+Речь пойдет о библиотеке <a href="https://github.com/reactjs/reselect">Reselect</a> для <a href="https://github.com/reactjs/redux">Redux</a>.
+Если вы уже используете в работе recompose то смело закрывайте статью, и читайте новости поинтереснее этой.
+Всех остальных призываю к прочтению</p>
+
+<p>Итак если вы наверняка часто видели подобную конструкицию в ваших компонентах и она успела приесться:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const mapStateToProps = state =&gt; ({
+    couponsList: state.couponsReducer.couponsList,
+})
+</code></pre>
+</div>
+
+<p>Все что я сделал, это передал массив купонов из редакс стора в пропсы коспонента.
+Раньше я ограничивался подобным, и всю логику по дальнейшиму разруливанию я делал внутри компонента.
+В этом кейсе мне нужно было отфильтровать только валидные купоны, и посчитать общуюю сумму дискаунта.</p>
+
+<p>Товарищ по работе намекнул на реселект, и я решил попробовать.
+Итак я преступил к работе, для начала я вынес получение массива куппонов в отдельную функцию</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const couponsSelector = state =&gt; state.couponsReducer.couponsList
+const mapStateToProps = state =&gt; ({
+    couponsList: couponsSelector(state),
+})
+</code></pre>
+</div>
+
+<p>Пока изменений мало но мысль заложена хорошая, у нас есть чистая функция, которая получает стейт идостает из него наш массив.
+Эту функцию мы можем вынести в отдельный файл, в папочке selectors рядом с нашим редьюсерами и импортить их в любом нужном нам компоненте.
+Но соглаитесь, пока все это оверхед</p>
+
+<p>Итак продолжаем, обратимся к reselect для фильтрации только валидных куппонов:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const couponsSelector = state =&gt; state.couponsReducer.couponsList
+const validCouponsListSelector = createSelector(
+    couponsSelector,
+    arr =&gt; validateCoupons(arr),
+)
+const mapStateToProps = state =&gt; ({
+    couponsList: couponsSelector(state),
+    validCouponsList: validCouponsListSelector(state),
+})
+</code></pre>
+</div>
+
+<p>Опа, что это мы сейчас сделали?
+А мы добавили новый селектор, который в качесве 1 аргумента получает другой селектор, а последним функцию обработчик.
+Вот пример из док:
+    const taxSelector = createSelector(
+        subtotalSelector,
+        taxPercentSelector,
+        (subtotal, taxPercent) =&gt; subtotal * (taxPercent / 100)
+    )</p>
+
+<p>Сечете? мы передали в функцию <code class="highlighter-rouge">createSelector</code> два наших селектора, а вконце получили их значение в функции обработчике</p>
+
+<p>Итак уже есть пару селекторов для моего компонента, но нужно больше, мне нужно получить полную скидку, вперед:
+    const totalDiscountSelector = createSelector(
+        validCouponsListSelector,
+        coupons =&gt; calculateSumm(coupons),
+    )
+    const mapStateToProps = state =&gt; ({
+        couponsList: couponsSelector(state),
+        validCouponsList: validCouponsListSelector(state),
+        totalDiscount: totalDiscountSelector(state),
+    })</p>
+
+<p>Нам не пришлось сохранять промежуточное значение <code class="highlighter-rouge">validCouponsList</code> для дальнейшего использования, а ведь и оно тоже нам пригодится
+Этих селекторов может быть куча, так я расширил свое приложение следующим образом:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const limitedDiscountSelector = createSelector(
+    totalDiscountSelector,
+    discountTypeSelector,
+    discountLimiter,
+    (total, discType, limiter) =&gt; pleaseLimitMydiscount(total, discType, limiter)
+);
+const mapStateToProps = state =&gt; ({
+    couponsList: couponsSelector(state),
+    validCouponsList: validCouponsListSelector(state),
+    discountType: discountTypeSelector(state),
+    discountLimiter: discountLimiterSelector(state),
+    totalDiscount: totalDiscountSelector(state),
+    limitedDiscount: limitedDiscountSelector(state), 
+})
+</code></pre>
+</div>
+
+<p>Пользователь может захотеть задать максимальную допустимую скидку для купонов, а они ведь могут быть разных видов, одни процентные скидки, другие денежные. 
+По дефлоту реселект позволяет кешировать данные, и делет их проверку внутри себя, но вы вольны сделать свою собственную мемоизацию.
+Я вынес все селеторы в отельный модуль, для удобного хранения и доступа из других компонентов.
+Освободил компонент от лишнего кода, что облегчело понимание что же он должен делать, а не как.
+Спасибо за чтение.
+Рекомендую рекомпоз к ознакомлениею и дальнейшему использованию!
+Пишите мне в <a href="https://twitter.com/pvpshoot">twitter</a> если хотите подискутировать на эту тему</p>
+
+</article>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>
