@@ -1,7 +1,7 @@
 ---
 layout:     post
 title:      'Заметка: Первое впечатление о reselect для redux'
-date:       2017-03-15
+date:       2017-07-05
 categories: jekyll pixyll
 permalink: /zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html
 ---
