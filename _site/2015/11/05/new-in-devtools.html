@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Новое в DevTools &#8211; </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Используйте новое контекстное меню в панели DOM для эффективного редактирования узлов. Осуществляйте отладку services workers при помощи панели ресурсов. Выбирайте один из оттенков в стиле Material Design в компоненте colorpicker. Работайте с Blackbox JS проще.">
+    <meta name="author" content="">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://localhost:4000/2015/11/05/new-in-devtools.html">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for " href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201707051528" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Новое в DevTools">
+    <meta property="og:description" content="">
+    <meta property="og:url" content="http://localhost:4000/2015/11/05/new-in-devtools.html">
+    <meta property="og:site_name" content="">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Новое в DevTools" />
+    <meta name="twitter:description" content="Используйте новое контекстное меню в панели DOM для эффективного редактирования узлов. Осуществляйте отладку services workers при помощи панели ресурсов. Выбирайте один из оттенков в стиле Material Design в компоненте colorpicker. Работайте с Blackbox JS проще." />
+    <meta name="twitter:url" content="http://localhost:4000/2015/11/05/new-in-devtools.html" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://localhost:4000" class="site-title"></a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Новое в DevTools</h1>
+  <span class="post-meta">Nov 5, 2015</span><br>
+    
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><i>Данный материал является вольным переводом статьи: <br />Paul Bakaus <a href="https://developers.google.com/web/updates/2015/10/devtools-digest-efficient-element-edits">DevTools Digest: Efficient element edits, Service Worker debugging, and Material Design shades
+</a></i></p>
+
+<p><img src="/images/devtools.png" class="main-img" /></p>
+
+<p>Используйте новое контекстное меню в панели DOM для эффективного редактирования узлов. Осуществляйте отладку services workers при помощи панели ресурсов. Выбирайте один из оттенков в стиле Material Design в компоненте colorpicker. Работайте с Blackbox JS проще.</p>
+
+<p>##Улучшенное контекстное меню панели DOM.</p>
+
+<p><img src="https://developers.google.com/web/updates/images/2015/10/devtools-dom-menu.png" style="float: left;max-width: 230px;margin-right: 1em;margin-bottom: 1em;width: 40%;" /></p>
+
+<p>Мы проанализировали наиболее часто совершаемые действия в панели DOM и пришли к выводу, что контекстное меню не должно быть загроможденным и должно быть реорганизовано. Теперь намного проще выполнять такие операции как: скрыть или удалить элемент, сделать его состояние :active или :hover или начать редактирование HTML. И если при работе с трекпадом вы не хотите заморачиваться с “правой кнопкой мыши” нажмите на три маленькие точки рядом с выбранным элементом.</p>
+
+<div class="clearfix"></div>
+
+<p>##Отладка Service Workers в панели ресурсов</p>
+
+<p>Service Workers это просто фантастика, особенно после того, как вы получили возможность их настроить. Но они могут каверзно вскружить вам голову, особенно поначалу. Еще хуже был тот факт, что их отладка требовала открытия новой вкладки с адресом chrome://serviceworker-internals/</p>
+
+<p><img src="https://developers.google.com/web/updates/images/2015/10/devtools-service-workers.png" /></p>
+
+<p>Хватит это терпеть! Теперь можно отлаживать Service Workers для текущего домена непосредственно в панели ресурсов. Работа над данной возможностью еще продолжается, но она претерпела значительные улучшения по сравнению с предыдущей версией.</p>
+
+<p>##Все цвета: Оттенки Material Design в colorpicker</p>
+
+<p>Несколько недель назад мы добавили палитру Material Design в colorpicker, чтобы дать вам возможность использовать основные цвета “из коробки”. На деле для создания полной страницы вам неизбежно понадобится доступ ко всем оттенкам Material Design, поэтому мы добавили их.</p>
+
+<video src="https://developers.google.com/web/updates/videos/2015/10/devtools-md-shades.mp4" controls="" loop="" autoplay=""></video>
+
+<p>Для доступа к оттенкам сделайте “долгий клик” на один из первичных цветов и выберите оттенок вместо него.</p>
+
+<p>##Легкая настройка Blackbox JavaScript библиотек</p>
+
+<p>JavaScript Blackboxing был совсем рядом, но его не очень-то легко было обнаружить. Эта функция позволяет исполнять blackbox сценарий на странице, чтобы вы могли сосредоточиться только на авторском коде (и скрыть код оболочек).</p>
+
+<p>Сейчас мы переместили ее в настройки.</p>
+
+<p><img src="https://developers.google.com/web/updates/images/2015/10/devtools-blackboxing.png" /></p>
+
+<p>##Лучшее из Rest</p>
+
+<ul>
+  <li>
+    <p>Отсутствует доступ к переключению рендеринга? Рендеринг настройки были перенесены в главное меню в DevTools ( в раздел “More Tools”). В дополнение к обычным инспекторам (наподобие FPS-метра) мы отправили туда же режим “Эмуляция печатного издания”.</p>
+  </li>
+  <li>
+    <p>Надоело вводить chrome://inspect в Omnibox? Inspect Devices вы можете теперь найти в новом главном меню в разделе “More Tools”.</p>
+  </li>
+  <li>
+    <p>Случайно закрыли одну из вкладок вроде рендеринга или поиска? Теперь вы можете открыть их снова при помощи нового левого меню.</p>
+  </li>
+</ul>
+
+<p><strong>UPD:</strong> Большое спасибо <a href="https://twitter.com/pepelsbey">Вадиму Макееву</a> за замечание о переводе абзаца про Blackbox и объяснение ошибки.</p>
+
+<p><i>Все фото и видео материалы взяты с сайта <a href="https://developers.google.com/web/updates/2015/10/devtools-digest-efficient-element-edits">developers.google.com</a></i></p>
+
+</article>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>

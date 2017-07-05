@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Изображения в теле документа &#8211; </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Добавить изображение на страницу можно не только стандартным способом, указав путь к файлу, но и разместив картинку в теле документа или таблице стилей.">
+    <meta name="author" content="">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://localhost:4000/2015/09/08/image-to-base64.html">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for " href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201707051528" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Изображения в теле документа">
+    <meta property="og:description" content="">
+    <meta property="og:url" content="http://localhost:4000/2015/09/08/image-to-base64.html">
+    <meta property="og:site_name" content="">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Изображения в теле документа" />
+    <meta name="twitter:description" content="Добавить изображение на страницу можно не только стандартным способом, указав путь к файлу, но и разместив картинку в теле документа или таблице стилей." />
+    <meta name="twitter:url" content="http://localhost:4000/2015/09/08/image-to-base64.html" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://localhost:4000" class="site-title"></a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Изображения в теле документа</h1>
+  <span class="post-meta">Sep 8, 2015</span><br>
+    
+  <span class="post-meta small">
+  
+    2 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><img src="/images/image-to-base64.png" class="main-img" /></p>
+
+<p>Добавить изображение на страницу можно не только стандартным способом, указав путь к файлу, но и разместив картинку в теле документа или таблице стилей.</p>
+
+<h2 id="section">Как это работает?</h2>
+
+<p main="">Для того, чтобы разместить изображение непосредственно в теле документа необходимо воспользоваться схемой data:URI.</p>
+<p aside=""><i>data: URI — это определённая стандартом RFC 2397 схема, которая позволяет включать небольшие элементы данных в строку URI, как если бы они были ссылкой на внешний ресурс.</i></p>
+
+<p>Схема представляет собой текстовую строку следующего формата</p>
+
+<pre>
+<code class="nohighlight">
+data:[&lt;MIME-type&gt;][;charset=&lt;encoding&gt;][;base64],&lt;data&gt;
+</code>
+</pre>
+
+<p><code class="nohighlight">[&lt;MIME-type&gt;]</code> — спецификация типа носителей данных. Например image/gif или text/plain;</p>
+
+<p><code class="nohighlight">[;charset=&lt;encoding&gt;]</code> — кодировка;</p>
+
+<p><code class="nohighlight">[;base64]</code> — формат, которым произведено кодирование;</p>
+
+<p><code class="nohighlight">&lt;data&gt;</code> — закодированные данные.</p>
+
+<p>Рассмотрим замену ссылки на изображение кодом base64.</p>
+
+<p>Селектор до внесения изменений:</p>
+
+<pre>
+<code class="css">
+.icon {
+  background: url(android.png);
+  width: 64px;
+  height: 64px;
+}
+</code>
+</pre>
+
+<p>После кодирования изображение выглядит как последовательность символов:</p>
+
+<pre><code>iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUVCQUY3QUU0QUVGMTFFNTk4QjRDQjA2QkJBMTM1RDkiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUVCQUY3QUY0QUVGMTFFNTk4QjRDQjA2QkJBMTM1RDkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5RUJBRjdBQzRBRUYxMUU1OThCNENCMDZCQkExMzVEOSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5RUJBRjdBRDRBRUYxMUU1OThCNENCMDZCQkExMzVEOSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PiS4gvAAAAKLSURBVHja7JuNVcIwEIAPnwPECewIOIEZwQ1gA9jAsgEj4ATqBNQJ6AaUCWCDmjyvz7zSNP8Q9O69e6Jtjruvd0kaE2jbFlSNIJXQOcQXafMj1MhZvAkALIUehRYRgy/Q5vIWAEiphW4jAthiZkFsAPeQRmS67oS+DKStfJqP+LNQgJ2EHoQ2A7a40KcknibKACmlUgozoe/4e2vQI947U1K/TBZvQgDMIlhbZakA3CUqgVeh+4j29mgz+xJg2GG1iXQbmg0pS2BqWeOhesTvygpAcaHgVQhFLgAYDnl9JxvsvTcBgW7QRjNwbedTDikArDXOc+WejWfwnXDNPetrjwKyFheaa02g7ZPmsyqL4Cl3YAaMPVmZos/opG8JLNDGzjJTnOOd9IOeTCYutX+EPORhJEvOAKgSUgIc8hFvXwhAYAeYi0yvAeBPyL8HYDMMshsOj4WsCJU4DjNlxrdShps5ruzkIAdlPsDw1XmpTKI6360zoBx5He2kuuDLj0krC79K23cB00oOzxgAN60s2bwLmIYUnnHNm3yb0ihAAAgAASAABIAAEAACQAAIAAEgAASAABAAAjDwt9rQpso4nsr1+hAAuYq60hj4vAEAX5prTqvCUpYIo4XfpWXW+7IcV4UZ+tr53oCyxTbmDpFcAYzKpfYJ0ijwHwBUmXV+fhLQBxRKR3NNPYHDRqnY2+Q4DO/hu5Q24PifqpibpPrZoD6FOfxsd9fJG5zv7nJt04DHVrx+vLEOTPSd4Rb3VwPZ5NqGRgECQAAIAAEgAAQgPwCmCUrtsRJVJ/E00bnBqWEKW2hmk65twuNNeHBSd5SmHGlTQqSjMTkA6JbVagyiBrvT3z5tvAF8CzAAFmQSikZU7rwAAAAASUVORK5CYII=</code></pre>
+
+<p>Полный код селектора выглядит следующим образом:</p>
+
+<pre>
+<code class="css">
+.icon {
+  background: url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEAAAABACAYAAACqaXHeAAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAyhpVFh0WE1MOmNvbS5hZG9iZS54bXAAAAAAADw/eHBhY2tldCBiZWdpbj0i77u/IiBpZD0iVzVNME1wQ2VoaUh6cmVTek5UY3prYzlkIj8+IDx4OnhtcG1ldGEgeG1sbnM6eD0iYWRvYmU6bnM6bWV0YS8iIHg6eG1wdGs9IkFkb2JlIFhNUCBDb3JlIDUuNi1jMDY3IDc5LjE1Nzc0NywgMjAxNS8wMy8zMC0yMzo0MDo0MiAgICAgICAgIj4gPHJkZjpSREYgeG1sbnM6cmRmPSJodHRwOi8vd3d3LnczLm9yZy8xOTk5LzAyLzIyLXJkZi1zeW50YXgtbnMjIj4gPHJkZjpEZXNjcmlwdGlvbiByZGY6YWJvdXQ9IiIgeG1sbnM6eG1wPSJodHRwOi8vbnMuYWRvYmUuY29tL3hhcC8xLjAvIiB4bWxuczp4bXBNTT0iaHR0cDovL25zLmFkb2JlLmNvbS94YXAvMS4wL21tLyIgeG1sbnM6c3RSZWY9Imh0dHA6Ly9ucy5hZG9iZS5jb20veGFwLzEuMC9zVHlwZS9SZXNvdXJjZVJlZiMiIHhtcDpDcmVhdG9yVG9vbD0iQWRvYmUgUGhvdG9zaG9wIENDIDIwMTUgKE1hY2ludG9zaCkiIHhtcE1NOkluc3RhbmNlSUQ9InhtcC5paWQ6OUVCQUY3QUU0QUVGMTFFNTk4QjRDQjA2QkJBMTM1RDkiIHhtcE1NOkRvY3VtZW50SUQ9InhtcC5kaWQ6OUVCQUY3QUY0QUVGMTFFNTk4QjRDQjA2QkJBMTM1RDkiPiA8eG1wTU06RGVyaXZlZEZyb20gc3RSZWY6aW5zdGFuY2VJRD0ieG1wLmlpZDo5RUJBRjdBQzRBRUYxMUU1OThCNENCMDZCQkExMzVEOSIgc3RSZWY6ZG9jdW1lbnRJRD0ieG1wLmRpZDo5RUJBRjdBRDRBRUYxMUU1OThCNENCMDZCQkExMzVEOSIvPiA8L3JkZjpEZXNjcmlwdGlvbj4gPC9yZGY6UkRGPiA8L3g6eG1wbWV0YT4gPD94cGFja2V0IGVuZD0iciI/PiS4gvAAAAKLSURBVHja7JuNVcIwEIAPnwPECewIOIEZwQ1gA9jAsgEj4ATqBNQJ6AaUCWCDmjyvz7zSNP8Q9O69e6Jtjruvd0kaE2jbFlSNIJXQOcQXafMj1MhZvAkALIUehRYRgy/Q5vIWAEiphW4jAthiZkFsAPeQRmS67oS+DKStfJqP+LNQgJ2EHoQ2A7a40KcknibKACmlUgozoe/4e2vQI947U1K/TBZvQgDMIlhbZakA3CUqgVeh+4j29mgz+xJg2GG1iXQbmg0pS2BqWeOhesTvygpAcaHgVQhFLgAYDnl9JxvsvTcBgW7QRjNwbedTDikArDXOc+WejWfwnXDNPetrjwKyFheaa02g7ZPmsyqL4Cl3YAaMPVmZos/opG8JLNDGzjJTnOOd9IOeTCYutX+EPORhJEvOAKgSUgIc8hFvXwhAYAeYi0yvAeBPyL8HYDMMshsOj4WsCJU4DjNlxrdShps5ruzkIAdlPsDw1XmpTKI6360zoBx5He2kuuDLj0krC79K23cB00oOzxgAN60s2bwLmIYUnnHNm3yb0ihAAAgAASAABIAAEAACQAAIAAEgAASAABAAAjDwt9rQpso4nsr1+hAAuYq60hj4vAEAX5prTqvCUpYIo4XfpWXW+7IcV4UZ+tr53oCyxTbmDpFcAYzKpfYJ0ijwHwBUmXV+fhLQBxRKR3NNPYHDRqnY2+Q4DO/hu5Q24PifqpibpPrZoD6FOfxsd9fJG5zv7nJt04DHVrx+vLEOTPSd4Rb3VwPZ5NqGRgECQAAIAAEgAAQgPwCmCUrtsRJVJ/E00bnBqWEKW2hmk65twuNNeHBSd5SmHGlTQqSjMTkA6JbVagyiBrvT3z5tvAF8CzAAFmQSikZU7rwAAAAASUVORK5CYII=");
+  width: 64px;
+  height: 64px;
+}
+</code>
+</pre>
+
+<h2 id="section-1">Плюсы</h2>
+
+<h3 id="section-2">Изображения доступны сразу</h3>
+
+<p>Если в проекте есть два изображения, показывающих обычное состояние и состояние при ховере, то, скорее всего, при наведении курсора первое изображение пропадет, а второе отобразится только через некоторое время.</p>
+
+<p><img src="http://zippy.gfycat.com/HilariousDamagedFirebelliedtoad.gif" style="display: block; margin: auto;" /></p>
+
+<p>Это происходит потому что изображение для ховера загружается только в момент совершения события. Браузеру требуется некоторое время для того, чтобы обратиться по ссылке, получить картинку и отобразить ее на странице.</p>
+
+<p>В случае с использованием кодирования все изображения загружаются вместе с CSS, так как являются его частью.</p>
+
+<p><img src="http://zippy.gfycat.com/ScentedExcellentAcornweevil.gif" style="display: block; margin: auto;" /></p>
+
+<h3 id="section-3">Отсутствие лишних запросов</h3>
+
+<p>У браузеров есть ограничение на количество одновременных подключений к серверу. Как правило, это число в диапазоне от 4 до 6. Если изображения находятся внутри тела документа то освободившиеся подключения становятся доступными для загрузки другого контента.</p>
+
+<h2 id="section-4">Минусы</h2>
+
+<h3 id="section-5">Размер</h3>
+
+<p>При кодировании размер изображений увеличивается. Больше всего “прибавляют в весе” небольшие картинки.</p>
+
+<p>Сравнение размеров обычного png файла и файла содержащего base64 код.</p>
+
+<p><img src="https://api.monosnap.com/rpc/file/download?id=NCsZzrhgoEHUlah5hBY4i4sZnx45tk" style="display: block; margin: auto;" /></p>
+
+<p>Закодированное изображение стало тяжелее более чем на 34%.</p>
+
+<h3 id="section-6">Обновление</h3>
+
+<p main="">Поддерживать ресурс у которого много изображений &laquo;зашито&raquo; в css — проблематично.</p>
+<p aside="">К счастью, с появлением препроцессоров и сборщиков проектов эта проблема не стоит так остро.</p>
+<p>
+  <ul>
+    <li>Кодированное изображение не наглядно: посмотреть чем на самом деле является конкретная вереница символов можно, разве что, в инспекторе элементов, в браузере.</li>
+    <li>Для внесения изменения нужно модифицировать исходник и повторно его кодировать.</li>
+  </ul>
+</p>
+
+<h3 id="internet-explorer-8">Internet Explorer 8</h3>
+
+<p><img src="https://api.monosnap.com/rpc/file/download?id=rSd1meYWz1KdSXIfCcPwTjUowpBedS" style="display: block; margin: auto;" /></p>
+
+<p>Если вам приходится поддерживать данный браузер, то у вас могут возникнуть проблемы. У браузера имеется ограничение на длину uri. Оно равно 32Кб, “лишние” данные будут просто обрезаться. В IE 9 данное ограничение уже равняется 4Гб.</p>
+
+<h2 id="section-7">Чем кодировать?</h2>
+
+<p>Для кодирования изображений можно воспользоваться:</p>
+
+<ul>
+  <li><a href="http://docs.emmet.io/actions/base64/">Плагином Emmet</a></li>
+  <li><a href="http://www.dailycoding.com/Utils/Converter/ImageToBase64.aspx">Онлайн сервисом, например dailycoding.com</a></li>
+  <li><a href="https://www.npmjs.com/package/gulp-base64">Плагином для вашего сборщика</a></li>
+</ul>
+
+
+</article>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>

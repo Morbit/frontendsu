@@ -1,10 +1,112 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>front-end.su</title>
-    <description>front-end разработка в деталях</description>
-    <link>http://front-end.su/</link>
-    <atom:link href="http://front-end.su/feed.xml" rel="self" type="application/rss+xml" />
+    <title></title>
+    <description></description>
+    <link>http://localhost:4000/</link>
+    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    
+      <item>
+        <title>Заметка: Первое впечатление о reselect для redux</title>
+        <description>&lt;p&gt;Всем привет, меня зовут &lt;a href=&quot;https://twitter.com/pvpshoot&quot;&gt;Миша&lt;/a&gt;, и автор этого блога сподвиг меня написать сюда заметку, которой я поделился в нашем фронтенд чатике слака.
+Речь пойдет о библиотеке &lt;a href=&quot;https://github.com/reactjs/reselect&quot;&gt;Reselect&lt;/a&gt; для &lt;a href=&quot;https://github.com/reactjs/redux&quot;&gt;Redux&lt;/a&gt;.
+Если вы уже используете в работе recompose то смело закрывайте статью, и читайте новости поинтереснее этой.
+Всех остальных призываю к прочтению&lt;/p&gt;
+
+&lt;p&gt;Итак если вы наверняка часто видели подобную конструкицию в ваших компонентах и она успела приесться:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const mapStateToProps = state =&amp;gt; ({
+    couponsList: state.couponsReducer.couponsList,
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Все что я сделал, это передал массив купонов из редакс стора в пропсы коспонента.
+Раньше я ограничивался подобным, и всю логику по дальнейшиму разруливанию я делал внутри компонента.
+В этом кейсе мне нужно было отфильтровать только валидные купоны, и посчитать общуюю сумму дискаунта.&lt;/p&gt;
+
+&lt;p&gt;Товарищ по работе намекнул на реселект, и я решил попробовать.
+Итак я преступил к работе, для начала я вынес получение массива куппонов в отдельную функцию&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const couponsSelector = state =&amp;gt; state.couponsReducer.couponsList
+const mapStateToProps = state =&amp;gt; ({
+    couponsList: couponsSelector(state),
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Пока изменений мало но мысль заложена хорошая, у нас есть чистая функция, которая получает стейт идостает из него наш массив.
+Эту функцию мы можем вынести в отдельный файл, в папочке selectors рядом с нашим редьюсерами и импортить их в любом нужном нам компоненте.
+Но соглаитесь, пока все это оверхед&lt;/p&gt;
+
+&lt;p&gt;Итак продолжаем, обратимся к reselect для фильтрации только валидных куппонов:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const couponsSelector = state =&amp;gt; state.couponsReducer.couponsList
+const validCouponsListSelector = createSelector(
+    couponsSelector,
+    arr =&amp;gt; validateCoupons(arr),
+)
+const mapStateToProps = state =&amp;gt; ({
+    couponsList: couponsSelector(state),
+    validCouponsList: validCouponsListSelector(state),
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Опа, что это мы сейчас сделали?
+А мы добавили новый селектор, который в качесве 1 аргумента получает другой селектор, а последним функцию обработчик.
+Вот пример из док:
+    const taxSelector = createSelector(
+        subtotalSelector,
+        taxPercentSelector,
+        (subtotal, taxPercent) =&amp;gt; subtotal * (taxPercent / 100)
+    )&lt;/p&gt;
+
+&lt;p&gt;Сечете? мы передали в функцию &lt;code class=&quot;highlighter-rouge&quot;&gt;createSelector&lt;/code&gt; два наших селектора, а вконце получили их значение в функции обработчике&lt;/p&gt;
+
+&lt;p&gt;Итак уже есть пару селекторов для моего компонента, но нужно больше, мне нужно получить полную скидку, вперед:
+    const totalDiscountSelector = createSelector(
+        validCouponsListSelector,
+        coupons =&amp;gt; calculateSumm(coupons),
+    )
+    const mapStateToProps = state =&amp;gt; ({
+        couponsList: couponsSelector(state),
+        validCouponsList: validCouponsListSelector(state),
+        totalDiscount: totalDiscountSelector(state),
+    })&lt;/p&gt;
+
+&lt;p&gt;Нам не пришлось сохранять промежуточное значение &lt;code class=&quot;highlighter-rouge&quot;&gt;validCouponsList&lt;/code&gt; для дальнейшего использования, а ведь и оно тоже нам пригодится
+Этих селекторов может быть куча, так я расширил свое приложение следующим образом:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;const limitedDiscountSelector = createSelector(
+    totalDiscountSelector,
+    discountTypeSelector,
+    discountLimiter,
+    (total, discType, limiter) =&amp;gt; pleaseLimitMydiscount(total, discType, limiter)
+);
+const mapStateToProps = state =&amp;gt; ({
+    couponsList: couponsSelector(state),
+    validCouponsList: validCouponsListSelector(state),
+    discountType: discountTypeSelector(state),
+    discountLimiter: discountLimiterSelector(state),
+    totalDiscount: totalDiscountSelector(state),
+    limitedDiscount: limitedDiscountSelector(state), 
+})
+&lt;/code&gt;&lt;/pre&gt;
+&lt;/div&gt;
+
+&lt;p&gt;Пользователь может захотеть задать максимальную допустимую скидку для купонов, а они ведь могут быть разных видов, одни процентные скидки, другие денежные. 
+По дефлоту реселект позволяет кешировать данные, и делет их проверку внутри себя, но вы вольны сделать свою собственную мемоизацию.
+Я вынес все селеторы в отельный модуль, для удобного хранения и доступа из других компонентов.
+Освободил компонент от лишнего кода, что облегчело понимание что же он должен делать, а не как.
+Спасибо за чтение.
+Рекомендую рекомпоз к ознакомлениею и дальнейшему использованию!
+Пишите мне в &lt;a href=&quot;https://twitter.com/pvpshoot&quot;&gt;twitter&lt;/a&gt; если хотите подискутировать на эту тему&lt;/p&gt;
+</description>
+        <pubDate>Wed, 15 Mar 2017 00:00:00 +0400</pubDate>
+        <link>http://localhost:4000/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html</link>
+        <guid isPermaLink="true">http://localhost:4000/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html</guid>
+      </item>
     
       <item>
         <title>Создание Alix, Chrome-расширения для линтинга HTML</title>
@@ -34,7 +136,7 @@ img:not([alt])::after {
 
 &lt;p&gt;При помощи расширения легко применить таблицу стилей к любой странице. Вот как я это сделала.&lt;/p&gt;
 
-&lt;h3 id=&quot;chrome-&quot;&gt;Объявление расширения Chrome: Манифест&lt;/h3&gt;
+&lt;p&gt;###Объявление расширения Chrome: Манифест&lt;/p&gt;
 
 &lt;p&gt;Первое, что нам нужно сделать, при создании расширения для Chrome — создать манифест-файл. Работает это так же как в случае когда мы создаем манифест-файл для прогрессивного веб приложения (PWA прим. переводчика). Файл включает в себя различную информацию, по которой Chrome определяет, что должно делать расширение и какие разрешения ему для этого необходимы.&lt;/p&gt;
 
@@ -94,7 +196,7 @@ img:not([alt])::after {
 
 &lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;web_accessible_resources&lt;/code&gt;:  массив путей к ресурсам, которые могут использоваться на странице.&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;Создание всплывающего окна&lt;/h2&gt;
+&lt;p&gt;##Создание всплывающего окна&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://bitsofco.de/content/images/2017/03/Screen-Shot-2017-03-08-at-09.32.02.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -102,7 +204,7 @@ img:not([alt])::after {
 
 &lt;p&gt;С этой страницей мы можем делать все, что захотим, как с обычной html страницей.&lt;/p&gt;
 
-&lt;h2 id=&quot;a11ycss&quot;&gt;Добавляем таблицу стилей a11y.css&lt;/h2&gt;
+&lt;p&gt;##Добавляем таблицу стилей a11y.css&lt;/p&gt;
 
 &lt;p&gt;Наконец, нам нужно применить к текущей активной вкладке таблицу стилей &lt;code class=&quot;highlighter-rouge&quot;&gt;a11y.css&lt;/code&gt;. Для этого должен быть запущен скрипт, который создаст на странице элемент &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;link rel=&quot;stylsheet&quot;&amp;gt;&lt;/code&gt; указывающий на необходимую таблицу стилей.&lt;/p&gt;
 
@@ -136,8 +238,8 @@ img:not([alt])::after {
 &lt;p&gt;Спасибо &lt;a href=&quot;https://twitter.com/ffoodd_fr&quot;&gt;Gaël Poupard&lt;/a&gt; за созданный им &lt;a href=&quot;http://ffoodd.github.io/a11y.css/&quot;&gt;a11y.css&lt;/a&gt;!&lt;/p&gt;
 </description>
         <pubDate>Wed, 15 Mar 2017 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/making-alix-a-chrome-extension-for-linting-html</link>
-        <guid isPermaLink="true">http://front-end.su/making-alix-a-chrome-extension-for-linting-html</guid>
+        <link>http://localhost:4000/making-alix-a-chrome-extension-for-linting-html</link>
+        <guid isPermaLink="true">http://localhost:4000/making-alix-a-chrome-extension-for-linting-html</guid>
       </item>
     
       <item>
@@ -148,7 +250,7 @@ img:not([alt])::after {
 
 &lt;p&gt;Существует множество способов проверки HTML для обнаружения и устранения проблем. К примеру, можно воспользоваться &lt;a href=&quot;https://validator.w3.org/&quot;&gt;валидатором W3C&lt;/a&gt;. Но есть еще одна вещь которую мы с легкостью можем интегрировать в процесс разработки — использовать некоторые усовершенствованные CSS селекторы для выделения потенциально проблемных областей. Ниже мы рассмотрим несколько примеров, которые помогут нам в этом.&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;Встроенные стили&lt;/h2&gt;
+&lt;p&gt;##Встроенные стили&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -162,7 +264,7 @@ img:not([alt])::after {
 
 &lt;p&gt;Выбрав проблемные элементы, мы можем применить к ним оформление, чтобы сделать их заметными на странице, например, добавить красную рамку.&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;Неисправные или отсутствующие ссылки&lt;/h2&gt;
+&lt;p&gt;##Неисправные или отсутствующие ссылки&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -175,7 +277,7 @@ a[href*=&quot;javascript:void(0)&quot;] { … }
 
 &lt;p&gt;Эти селекторы выделяют ссылки, которые либо не содержат атрибута &lt;code class=&quot;highlighter-rouge&quot;&gt;href&lt;/code&gt;, либо он не несет смысла.&lt;/p&gt;
 
-&lt;h2 id=&quot;section-2&quot;&gt;Недоступные изображения&lt;/h2&gt;
+&lt;p&gt;##Недоступные изображения&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -189,7 +291,7 @@ img:not([alt]) { ... }
 
 &lt;pre&gt;&lt;code class=&quot;css&quot;&gt;img[alt=&quot;&quot;] { ... }&lt;/code&gt;&lt;/pre&gt;
 
-&lt;h2 id=&quot;section-3&quot;&gt;Отсутствие языка документа&lt;/h2&gt;
+&lt;p&gt;##Отсутствие языка документа&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -205,7 +307,7 @@ html[lang=&quot;&quot;] { ... }
 &lt;blockquote class=&quot;twitter-tweet&quot; data-lang=&quot;ru&quot;&gt;&lt;p lang=&quot;en&quot; dir=&quot;ltr&quot;&gt;Share &lt;a href=&quot;https://twitter.com/HTeuMeuLeu&quot;&gt;@HTeuMeuLeu&lt;/a&gt;&amp;#39;s video to show why setting a default language (eg. lang=&amp;quot;en&amp;quot;) is important. 😂 &lt;a href=&quot;https://t.co/tjn8GvPVKM&quot;&gt;https://t.co/tjn8GvPVKM&lt;/a&gt;&lt;/p&gt;&amp;mdash; overflow: heydon (@heydonworks) &lt;a href=&quot;https://twitter.com/heydonworks/status/834714116715663361&quot;&gt;23 февраля 2017 г.&lt;/a&gt;&lt;/blockquote&gt;
 &lt;script async=&quot;&quot; src=&quot;//platform.twitter.com/widgets.js&quot; charset=&quot;utf-8&quot;&gt;&lt;/script&gt;
 
-&lt;h2 id=&quot;section-4&quot;&gt;Неправильная кодировка&lt;/h2&gt;
+&lt;p&gt;##Неправильная кодировка&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -225,7 +327,7 @@ meta[charset=&quot;UTF-8&quot;]:not(:first-child) { ... }
 &lt;/code&gt;
 &lt;/pre&gt;
 
-&lt;h2 id=&quot;viewport&quot;&gt;Недопустимые атрибуты Viewport&lt;/h2&gt;
+&lt;p&gt;##Недопустимые атрибуты Viewport&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -237,7 +339,7 @@ meta[name=&quot;viewport&quot;][content*=&quot;minimum-scale&quot;] { ... }
 
 &lt;p&gt;Этот селектор необходимо использовать для выделения недопустимых значений viewport. Как правило, рекомендуется избегать ограничения возможности пользователю манипулировать областью просмотра, масштабируя ее.  Таким образом выражения &lt;code class=&quot;highlighter-rouge&quot;&gt;user-scalable=no&lt;/code&gt; , &lt;code class=&quot;highlighter-rouge&quot;&gt;maximum-scale&lt;/code&gt; или &lt;code class=&quot;highlighter-rouge&quot;&gt;minimum-scale&lt;/code&gt; никогда не должны использоваться.&lt;/p&gt;
 
-&lt;h2 id=&quot;section-5&quot;&gt;Немаркированные элементы формы&lt;/h2&gt;
+&lt;p&gt;##Немаркированные элементы формы&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -271,7 +373,7 @@ textarea:not([name]) { ... }
 
 &lt;p&gt;Этот селектор выделяет теги form, у которых отсутствуют оба атрибута — &lt;code class=&quot;highlighter-rouge&quot;&gt;name&lt;/code&gt; и &lt;code class=&quot;highlighter-rouge&quot;&gt;id&lt;/code&gt;.&lt;/p&gt;
 
-&lt;h2 id=&quot;section-6&quot;&gt;Пустые интерактивные элементы&lt;/h2&gt;
+&lt;p&gt;##Пустые интерактивные элементы&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -282,7 +384,7 @@ a:empty { ... }
 
 &lt;p&gt;Интерактивные элементы, такие как ссылки или кнопки, обычно размечаются их контентом. Хотя эти элементы можно размечать с помощью других методов, таких как атрибут &lt;code class=&quot;highlighter-rouge&quot;&gt;aria-label&lt;/code&gt;, ситуация, когда теги не содержат контента, скорее всего признак чего-то неправильного. Этот селектор выделяет любые ссылки и кнопки без содержимого.&lt;/p&gt;
 
-&lt;h2 id=&quot;section-7&quot;&gt;Необязательные или устаревшие атрибуты&lt;/h2&gt;
+&lt;p&gt;##Необязательные или устаревшие атрибуты&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;css&quot;&gt;
@@ -294,8 +396,8 @@ link[rel=&quot;stylesheet&quot;][type=&quot;text/css&quot;] { ... }
 &lt;p&gt;Наконец, мы можем использовать селектор, чтобы выделить элементы с атрибутами которые устарели или не являются обязательными.&lt;/p&gt;
 </description>
         <pubDate>Sun, 12 Mar 2017 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/linting-html-using-css</link>
-        <guid isPermaLink="true">http://front-end.su/linting-html-using-css</guid>
+        <link>http://localhost:4000/linting-html-using-css</link>
+        <guid isPermaLink="true">http://localhost:4000/linting-html-using-css</guid>
       </item>
     
       <item>
@@ -318,8 +420,8 @@ link[rel=&quot;stylesheet&quot;][type=&quot;text/css&quot;] { ... }
 &lt;p&gt;Если вы хотите посмотреть состояние тех или иных возможностей и их уровень,  можете сделать это в документе &lt;a href=&quot;https://www.w3.org/Style/CSS/current-work&quot;&gt;Current Work&lt;/a&gt;. Чтобы разобраться в различных статусах, советуем обратиться &lt;a href=&quot;https://www.w3.org/2005/10/Process-20051014/tr#maturity-levels&quot;&gt;к этому документу&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Tue, 27 Sep 2016 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/why-there-is-no-css4</link>
-        <guid isPermaLink="true">http://front-end.su/why-there-is-no-css4</guid>
+        <link>http://localhost:4000/why-there-is-no-css4</link>
+        <guid isPermaLink="true">http://localhost:4000/why-there-is-no-css4</guid>
       </item>
     
       <item>
@@ -393,16 +495,16 @@ call(‘my-function’) // -&amp;gt; ‘Hello, world.’
 &lt;p&gt;Примеры:&lt;/p&gt;
 
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@function foo($x) { @return $x; }
-foo(&#39;bar&#39;); // -&amp;gt; &#39;bar&#39;
+foo('bar'); // -&amp;gt; 'bar'
 
 // УСТАРЕЛО: ПЕРЕСТАНЕТ РАБОТАТЬ В Sass 4.0.0
-call(&#39;foo&#39;, &#39;bar&#39;); // -&amp;gt; &#39;bar&#39;
+call('foo', 'bar'); // -&amp;gt; 'bar'
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
 
 &lt;p&gt;Давайте посмотрим как работать со вторым вариантом (&lt;strong&gt;call()&lt;/strong&gt;) в Sass 3.5.0 и выше!&lt;/p&gt;
 
-&lt;h2 id=&quot;sass-35--&quot;&gt;Вызов функции в Sass 3.5 и выше&lt;/h2&gt;
+&lt;p&gt;##Вызов функции в Sass 3.5 и выше&lt;/p&gt;
 
 &lt;p&gt;В Sass 3.5 функцию необходимо вызывать при помощи &lt;strong&gt;call()&lt;/strong&gt; передав функцию первого класса при помощи &lt;strong&gt;get-function&lt;/strong&gt;.&lt;/p&gt;
 
@@ -418,15 +520,15 @@ call(&#39;foo&#39;, &#39;bar&#39;); // -&amp;gt; &#39;bar&#39;
 
 h1 {
   content: call(
-    get-function(&#39;foo&#39;),
-    &#39;It works :)&#39;
+    get-function('foo'),
+    'It works :)'
   );
 }
 
 h2 {
   content: call(
     get-function(foo),
-    &#39;(even without quotes)&#39;
+    '(even without quotes)'
   );
 }
 &lt;/code&gt;&lt;/pre&gt;
@@ -456,7 +558,7 @@ call($my-function); // -&amp;gt; Great!
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@function foo($x) { @return $x; }
 $foo: get-function(foo);
 h1 {
-  content: call($foo, &#39;bar&#39;);
+  content: call($foo, 'bar');
 } assign-function-to-variable.scss
 
 h1 { content: &quot;bar&quot;; } output-assign-function-to-variable.css
@@ -472,7 +574,7 @@ h1 { content: &quot;bar&quot;; } output-assign-function-to-variable.css
 
 &lt;p&gt;На первый взгляд, мне показалось хорошей идеей иметь возможность писать &lt;strong&gt;$a(b)&lt;/strong&gt; в Sass, но могут быть последствия, которые мы не учли! Давайте посмотрим, что будет в следующих версиях.&lt;/p&gt;
 
-&lt;h2 id=&quot;sass&quot;&gt;Написание кода, совместимого со всеми версиями Sass&lt;/h2&gt;
+&lt;p&gt;##Написание кода, совместимого со всеми версиями Sass&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/800/1*QqHJIgeZyYw-uezoAzR1AQ.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -487,17 +589,17 @@ h1 { content: &quot;bar&quot;; } output-assign-function-to-variable.css
 &lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;@function foo($x) { @return $x; }
 
 h1 {
-  @if (function-exists(&#39;get-function&#39;)) {
-    content: call(get-function(&#39;foo&#39;), &#39;Отобразится в Sass 3.5.0 и выше&#39;);
+  @if (function-exists('get-function')) {
+    content: call(get-function('foo'), 'Отобразится в Sass 3.5.0 и выше');
   } @else {
-    content: call(&#39;foo&#39;, &#39;Отобразится в Sass 3.3.x и 3.4.x&#39;);
+    content: call('foo', 'Отобразится в Sass 3.3.x и 3.4.x');
   }
 }
 
 // К сожалению, назначение функции в переменную
 // не может быть полифиллом для Sass 3.3.x и 3.4.x
 $foo: get-function(foo);
-h1 { content: call($foo, &#39;bar&#39;); }
+h1 { content: call($foo, 'bar'); }
 // -&amp;gt; el { content: get-function(foo)(&quot;bar&quot;); }
 &lt;/code&gt;&lt;/pre&gt;
 &lt;/div&gt;
@@ -517,7 +619,7 @@ h1 { content: call($foo, &#39;bar&#39;); }
 &lt;p&gt;Ссылка на GitHub:
 &lt;a href=&quot;https://github.com/kaelig/sass-safe-get-function&quot;&gt;https://github.com/kaelig/sass-safe-get-function&lt;/a&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;Подведем итоги&lt;/h2&gt;
+&lt;p&gt;##Подведем итоги&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://cdn-images-1.medium.com/max/800/1*xmjxJl4e89aFYBGA1V8xTQ.jpeg&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
@@ -532,7 +634,7 @@ h1 { content: call($foo, &#39;bar&#39;); }
 
 &lt;p&gt;Хотите поиграть с get-function? Я сделал песочницу в репозитории   &lt;a href=&quot;https://github.com/kaelig/sass-first-class-functions&quot;&gt;https://github.com/kaelig/sass-first-class-functions&lt;/a&gt;, развлекайтесь!&lt;/p&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;Источники&lt;/h3&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;Источники&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;http://blog.sass-lang.com/posts/809572-sass-35-release-candidate&quot;&gt;Sass 3.5.0 Release Candidate&lt;/a&gt;&lt;/li&gt;
@@ -542,13 +644,13 @@ h1 { content: call($foo, &#39;bar&#39;); }
   &lt;li&gt;&lt;a href=&quot;https://github.com/kaelig/sass-safe-get-function&quot;&gt;safe-get-function Sass utility on GitHub&lt;/a&gt;&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;h3 id=&quot;section-3&quot;&gt;Благодарность&lt;/h3&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;Благодарность&lt;/h3&gt;
 
 &lt;p&gt;Спасибо &lt;a href=&quot;https://medium.com/u/66dddc4d84eb&quot;&gt;Chris Eppstein&lt;/a&gt; за то что посмотрел и предложил использовать function-exists для обеспечения пути обновления для авторов библиотек.&lt;/p&gt;
 </description>
         <pubDate>Tue, 20 Sep 2016 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/sass-first-class-functions</link>
-        <guid isPermaLink="true">http://front-end.su/sass-first-class-functions</guid>
+        <link>http://localhost:4000/sass-first-class-functions</link>
+        <guid isPermaLink="true">http://localhost:4000/sass-first-class-functions</guid>
       </item>
     
       <item>
@@ -563,8 +665,8 @@ h1 { content: call($foo, &#39;bar&#39;); }
 
 &lt;p&gt;Проект debugger.html размещен на &lt;a href=&quot;https://github.com/devtools-html/debugger.html&quot;&gt;GitHub&lt;/a&gt; и использует современные фреймворки и наборы инструментов, что делает его доступным и привлекательным для широкой аудитории разработчиков.&lt;/p&gt;
 
-&lt;h2 id=&quot;debuggerhtml&quot;&gt;debugger.html&lt;/h2&gt;
-&lt;p&gt;Пользовательский интерфейс разделён на три области: панель исходников, панель редактирования и правый сайдбар.&lt;/p&gt;
+&lt;p&gt;##debugger.html
+Пользовательский интерфейс разделён на три области: панель исходников, панель редактирования и правый сайдбар.&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;em&gt;Панель исходников&lt;/em&gt; показывает дерево всех исходников для отлаживаемого в данный момент приложения.&lt;/li&gt;
@@ -579,7 +681,7 @@ h1 { content: call($foo, &#39;bar&#39;); }
 
 &lt;p&gt;&lt;img src=&quot;https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2016/09/debug.gif&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;section&quot;&gt;Приступая к работе&lt;/h2&gt;
+&lt;p&gt;##Приступая к работе&lt;/p&gt;
 
 &lt;p&gt;Прежде чем приступить к работе с отладчиком вы должны получить код с GitHub и посмотреть &lt;a href=&quot;https://github.com/devtools-html/debugger.html/blob/master/CONTRIBUTING.md#getting-started&quot;&gt;руководство к началу работы&lt;/a&gt;.&lt;/p&gt;
 
@@ -612,13 +714,13 @@ open http://localhost:8000 - откройте в любом современно
 
 &lt;p&gt;&lt;img src=&quot;https://2r4s9p1yi1fa2jd7j43zph8r-wpengine.netdna-ssl.com/files/2016/09/jsfiddle.png&quot; alt=&quot;&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;section-1&quot;&gt;Примите участие&lt;/h2&gt;
+&lt;p&gt;##Примите участие&lt;/p&gt;
 
 &lt;p&gt;Как уже упоминалось выше, проект находится в разработке, мы будем благодарны за вашу помощь в создании, возможно, лучшего отладчика. Если вы хотите присоединиться к нам, пожалуйста, ознакомьтесь с &lt;a href=&quot;https://github.com/devtools-html/debugger.html/blob/master/CONTRIBUTING.md&quot;&gt;руководством контрибьютера&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sun, 18 Sep 2016 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/introducing-debugger-html</link>
-        <guid isPermaLink="true">http://front-end.su/introducing-debugger-html</guid>
+        <link>http://localhost:4000/introducing-debugger-html</link>
+        <guid isPermaLink="true">http://localhost:4000/introducing-debugger-html</guid>
       </item>
     
       <item>
@@ -698,34 +800,34 @@ open http://localhost:8000 - откройте в любом современно
 
 &lt;pre&gt;
 &lt;code class=&quot;js&quot;&gt;
-var app = require(&#39;app&#39;);  // Модуль управления приложением.
-var BrowserWindow = require(&#39;browser-window&#39;);  // Модуль для создания окна браузера.
+var app = require('app');  // Модуль управления приложением.
+var BrowserWindow = require('browser-window');  // Модуль для создания окна браузера.
 
 // Сохраняем глобальную ссылку на объект Window, если этого не сделать
 // окно закроется автоматически как только сработает сборщик мусора JS.
 var mainWindow = null;
 
 // Выйти, после того как все окна будут закрыты.
-app.on(&#39;window-all-closed&#39;, function() {
+app.on('window-all-closed', function() {
     // В OS X это характерно для приложений и их меню,
     // чтобы оставаться активными, пока пользователь явно не завершит работу 
     // при помощи Cmd + Q
-    if (process.platform != &#39;darwin&#39;) {
+    if (process.platform != 'darwin') {
         app.quit();
     }
 });
 
 // Этот метод будет вызван когда Electron закончил
 // инициализацию и готов к созданию окна браузера.
-app.on(&#39;ready&#39;, function() {
+app.on('ready', function() {
     // Создаем окно браузера.
     mainWindow = new BrowserWindow({width: 900, height: 600});
 
     // и загружаем index.html в приложение.
-    mainWindow.loadURL(&#39;file://&#39; + __dirname + &#39;/index.html&#39;);
+    mainWindow.loadURL('file://' + __dirname + '/index.html');
 
     // Генерируется когда окно закрыто.
-    mainWindow.on(&#39;closed&#39;, function() {
+    mainWindow.on('closed', function() {
         // Сброс объекта окна, обычно нужен когда вы храните окна
         // в массиве, это нужно если в вашем приложении множество окон, 
         // в таком случае вы должны удалить соответствующий элемент.
@@ -757,34 +859,34 @@ $(function(){
 
     // Отображаем информацию о компьютере используя node-модуль os.
 
-    var os = require(&#39;os&#39;);
-    var prettyBytes = require(&#39;pretty-bytes&#39;);
+    var os = require('os');
+    var prettyBytes = require('pretty-bytes');
 
-    $(&#39;.stats&#39;).append(&#39;Number of cpu cores: &amp;lt;span&amp;gt;&#39; + os.cpus().length + &#39;&amp;lt;/span&amp;gt;&#39;);
-    $(&#39;.stats&#39;).append(&#39;Free memory: &amp;lt;span&amp;gt;&#39; + prettyBytes(os.freemem())+ &#39;&amp;lt;/span&amp;gt;&#39;);
+    $('.stats').append('Number of cpu cores: &amp;lt;span&amp;gt;' + os.cpus().length + '&amp;lt;/span&amp;gt;');
+    $('.stats').append('Free memory: &amp;lt;span&amp;gt;' + prettyBytes(os.freemem())+ '&amp;lt;/span&amp;gt;');
 
     // Библиотека UI компонентов Electron. Понадобится нам позже.
 
-    var shell = require(&#39;shell&#39;);
+    var shell = require('shell');
 
 
     // Получаем последние записи с Tutorialzine.
 
-    var ul = $(&#39;.flipster ul&#39;);
+    var ul = $('.flipster ul');
 
     // Политики безопасности в Electron не применяются, поэтому
     // мы можем отправлять ajax-запросы на другие сайты. Обратимся к Tutorialzine
 
-    $.get(&#39;http://feeds.feedburner.com/Tutorialzine&#39;, function(response){
+    $.get('http://feeds.feedburner.com/Tutorialzine', function(response){
 
         var rss = $(response);
 
         // Найдем все статьи в RSS потоке:
 
-        rss.find(&#39;item&#39;).each(function(){
+        rss.find('item').each(function(){
             var item = $(this);
 
-            var content = item.find(&#39;encoded&#39;).html().split(&#39;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;&#39;)[0]+&#39;&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;&#39;;
+            var content = item.find('encoded').html().split('&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;')[0]+'&amp;lt;/a&amp;gt;&amp;lt;/div&amp;gt;';
             var urlRegex = /(http|ftp|https):\/\/[\w\-_]+(\.[\w\-_]+)+([\w\-\.,@?^=%&amp;amp;:/~\+#]*[\w\-\@?^=%&amp;amp;/~\+#])?/g;
 
             // Получим первое изображение из статьи.
@@ -793,13 +895,13 @@ $(function(){
 
             // Создадим li для каждой статьи и добавим в неупорядоченный список.
 
-            var li = $(&#39;&amp;lt;li&amp;gt;&amp;lt;img /&amp;gt;&amp;lt;a target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;&#39;);
+            var li = $('&amp;lt;li&amp;gt;&amp;lt;img /&amp;gt;&amp;lt;a target=&amp;quot;_blank&amp;quot;&amp;gt;&amp;lt;/a&amp;gt;&amp;lt;/li&amp;gt;');
 
-            li.find(&#39;a&#39;)
-                .attr(&#39;href&#39;, item.find(&#39;link&#39;).text())
+            li.find('a')
+                .attr('href', item.find('link').text())
                 .text(item.find(&quot;title&quot;).text());
 
-            li.find(&#39;img&#39;).attr(&#39;src&#39;, imageSource);
+            li.find('img').attr('src', imageSource);
 
             li.appendTo(ul);
 
@@ -807,14 +909,14 @@ $(function(){
 
         // Инициализируем плагин flipster.
 
-        $(&#39;.flipster&#39;).flipster({
-            style: &#39;carousel&#39;
+        $('.flipster').flipster({
+            style: 'carousel'
         });
 
         // При клике на статью откроем страницу в браузере по умолчанию.
         // В противном случае откроем ее в окне Electron.
 
-        $(&#39;.flipster&#39;).on(&#39;click&#39;, &#39;a&#39;, function (e) {
+        $('.flipster').on('click', 'a', function (e) {
 
             e.preventDefault();
 
@@ -859,8 +961,8 @@ $(function(){
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 13 Jun 2016 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/2016/06/13/creating-your-first-desktop-app-with-electron/</link>
-        <guid isPermaLink="true">http://front-end.su/2016/06/13/creating-your-first-desktop-app-with-electron/</guid>
+        <link>http://localhost:4000/2016/06/13/creating-your-first-desktop-app-with-electron.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/06/13/creating-your-first-desktop-app-with-electron.html</guid>
       </item>
     
       <item>
@@ -1121,8 +1223,8 @@ grid-template-columns: [column 1 width]  [column 2 width]  [column 3 width];
 &lt;/ul&gt;
 </description>
         <pubDate>Sun, 05 Jun 2016 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/2016/06/05/css-grid-holy-grail/</link>
-        <guid isPermaLink="true">http://front-end.su/2016/06/05/css-grid-holy-grail/</guid>
+        <link>http://localhost:4000/2016/06/05/css-grid-holy-grail.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/06/05/css-grid-holy-grail.html</guid>
       </item>
     
       <item>
@@ -1131,9 +1233,9 @@ grid-template-columns: [column 1 width]  [column 2 width]  [column 3 width];
 
 &lt;p&gt;&lt;img src=&quot;/images/load-events.png&quot; class=&quot;main-img&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;documentready&quot;&gt;$(document).ready&lt;/h2&gt;
+&lt;p&gt;##$(document).ready&lt;/p&gt;
 
-&lt;p&gt;Длительное время мы использовали &lt;code class=&quot;highlighter-rouge&quot;&gt;&#39;$(document).ready&#39;&lt;/code&gt; работая с jQuery. Написанный таким образом код начнёт выполняться сразу после того, как будет готов DOM, за исключением картинок. Указанный код будет выполняться непосредственно после готовности DOM, не дожидаясь полной загрузки изображений. Вызов &lt;code class=&quot;highlighter-rouge&quot;&gt;$(document).ready&lt;/code&gt; несколько раз приведет к последовательному исполнению вызовов друг за другом. Существуют ещё несколько вариантов записи.&lt;/p&gt;
+&lt;p&gt;Длительное время мы использовали &lt;code class=&quot;highlighter-rouge&quot;&gt;'$(document).ready'&lt;/code&gt; работая с jQuery. Написанный таким образом код начнёт выполняться сразу после того, как будет готов DOM, за исключением картинок. Указанный код будет выполняться непосредственно после готовности DOM, не дожидаясь полной загрузки изображений. Вызов &lt;code class=&quot;highlighter-rouge&quot;&gt;$(document).ready&lt;/code&gt; несколько раз приведет к последовательному исполнению вызовов друг за другом. Существуют ещё несколько вариантов записи.&lt;/p&gt;
 
 &lt;pre&gt;
 &lt;code class=&quot;javascript&quot;&gt;
@@ -1150,7 +1252,7 @@ $(function() {
 });
 
 //Вариант 3
-$(document).on(&#39;ready&#39;, function(){
+$(document).on('ready', function(){
 /** начнёт работу тогда, когда будет готов DOM, за исключением картинок **/
 //ваш код
 });
@@ -1163,7 +1265,7 @@ jQuery(document).ready(function(){
 &lt;/code&gt;
 &lt;/pre&gt;
 
-&lt;h2 id=&quot;windowload&quot;&gt;$(window).load&lt;/h2&gt;
+&lt;p&gt;##$(window).load&lt;/p&gt;
 
 &lt;p&gt;Если мы говорим о &lt;code class=&quot;highlighter-rouge&quot;&gt;$(window).load&lt;/code&gt; то код, написанный внутри такой конструкции, начнёт работу когда будет готов весь DOM включая изображения. Такой вызов подойдёт если мы хотим работать с изображениями (расчёт размеров изображения). Данный вызов, как и предыдущий является jQuery событием. Если на нашей странице есть изображения, то сначала мы дождёмся загрузки их всех, а потом будет вызван код.&lt;/p&gt;
 
@@ -1184,7 +1286,7 @@ $(&quot;#elementid&quot;).load( &quot;data.html&quot; );
 &lt;/code&gt;
 &lt;/pre&gt;
 
-&lt;h2 id=&quot;windowonload&quot;&gt;window.onload&lt;/h2&gt;
+&lt;p&gt;##window.onload&lt;/p&gt;
 
 &lt;p&gt;Событие onload является стандартным событием в DOM, а описанные выше решения работают только при наличии библиотеки jQuery. Данный вариант имеет такую же функциональность как &lt;code class=&quot;highlighter-rouge&quot;&gt;$(window).load&lt;/code&gt;, но является встроенным JavaScript событием. Событие onload происходит, когда объект был загружен. Мы можем сделать такой вызов непосредственно из тега. Например, разместив его в теге изображения и как только оно будет загружено произойдёт вызов события.&lt;/p&gt;
 
@@ -1249,8 +1351,8 @@ alert(&quot;вызов после загрузки изображения&quot;)
 &lt;/pre&gt;
 </description>
         <pubDate>Fri, 12 Feb 2016 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/2016/02/12/load-events/</link>
-        <guid isPermaLink="true">http://front-end.su/2016/02/12/load-events/</guid>
+        <link>http://localhost:4000/2016/02/12/load-events.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2016/02/12/load-events.html</guid>
       </item>
     
       <item>
@@ -1262,7 +1364,7 @@ alert(&quot;вызов после загрузки изображения&quot;)
 
 &lt;p&gt;Используйте новое контекстное меню в панели DOM для эффективного редактирования узлов. Осуществляйте отладку services workers при помощи панели ресурсов. Выбирайте один из оттенков в стиле Material Design в компоненте colorpicker. Работайте с Blackbox JS проще.&lt;/p&gt;
 
-&lt;h2 id=&quot;dom&quot;&gt;Улучшенное контекстное меню панели DOM.&lt;/h2&gt;
+&lt;p&gt;##Улучшенное контекстное меню панели DOM.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://developers.google.com/web/updates/images/2015/10/devtools-dom-menu.png&quot; style=&quot;float: left;max-width: 230px;margin-right: 1em;margin-bottom: 1em;width: 40%;&quot; /&gt;&lt;/p&gt;
 
@@ -1270,7 +1372,7 @@ alert(&quot;вызов после загрузки изображения&quot;)
 
 &lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;
 
-&lt;h2 id=&quot;service-workers---&quot;&gt;Отладка Service Workers в панели ресурсов&lt;/h2&gt;
+&lt;p&gt;##Отладка Service Workers в панели ресурсов&lt;/p&gt;
 
 &lt;p&gt;Service Workers это просто фантастика, особенно после того, как вы получили возможность их настроить. Но они могут каверзно вскружить вам голову, особенно поначалу. Еще хуже был тот факт, что их отладка требовала открытия новой вкладки с адресом chrome://serviceworker-internals/&lt;/p&gt;
 
@@ -1278,7 +1380,7 @@ alert(&quot;вызов после загрузки изображения&quot;)
 
 &lt;p&gt;Хватит это терпеть! Теперь можно отлаживать Service Workers для текущего домена непосредственно в панели ресурсов. Работа над данной возможностью еще продолжается, но она претерпела значительные улучшения по сравнению с предыдущей версией.&lt;/p&gt;
 
-&lt;h2 id=&quot;material-design--colorpicker&quot;&gt;Все цвета: Оттенки Material Design в colorpicker&lt;/h2&gt;
+&lt;p&gt;##Все цвета: Оттенки Material Design в colorpicker&lt;/p&gt;
 
 &lt;p&gt;Несколько недель назад мы добавили палитру Material Design в colorpicker, чтобы дать вам возможность использовать основные цвета “из коробки”. На деле для создания полной страницы вам неизбежно понадобится доступ ко всем оттенкам Material Design, поэтому мы добавили их.&lt;/p&gt;
 
@@ -1286,7 +1388,7 @@ alert(&quot;вызов после загрузки изображения&quot;)
 
 &lt;p&gt;Для доступа к оттенкам сделайте “долгий клик” на один из первичных цветов и выберите оттенок вместо него.&lt;/p&gt;
 
-&lt;h2 id=&quot;blackbox-javascript-&quot;&gt;Легкая настройка Blackbox JavaScript библиотек&lt;/h2&gt;
+&lt;p&gt;##Легкая настройка Blackbox JavaScript библиотек&lt;/p&gt;
 
 &lt;p&gt;JavaScript Blackboxing был совсем рядом, но его не очень-то легко было обнаружить. Эта функция позволяет исполнять blackbox сценарий на странице, чтобы вы могли сосредоточиться только на авторском коде (и скрыть код оболочек).&lt;/p&gt;
 
@@ -1294,7 +1396,7 @@ alert(&quot;вызов после загрузки изображения&quot;)
 
 &lt;p&gt;&lt;img src=&quot;https://developers.google.com/web/updates/images/2015/10/devtools-blackboxing.png&quot; /&gt;&lt;/p&gt;
 
-&lt;h2 id=&quot;rest&quot;&gt;Лучшее из Rest&lt;/h2&gt;
+&lt;p&gt;##Лучшее из Rest&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;
@@ -1313,112 +1415,8 @@ alert(&quot;вызов после загрузки изображения&quot;)
 &lt;p&gt;&lt;i&gt;Все фото и видео материалы взяты с сайта &lt;a href=&quot;https://developers.google.com/web/updates/2015/10/devtools-digest-efficient-element-edits&quot;&gt;developers.google.com&lt;/a&gt;&lt;/i&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 05 Nov 2015 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/2015/11/05/new-in-devtools/</link>
-        <guid isPermaLink="true">http://front-end.su/2015/11/05/new-in-devtools/</guid>
-      </item>
-    
-      <item>
-        <title>Секции для контента в HTML5 — div или section или article?</title>
-        <description>&lt;p&gt;&lt;i&gt;Данный материал является вольным переводом статьи: &lt;br /&gt;Ire Aderinokun &lt;a href=&quot;http://bitsofco.de/2015/sectioning-content-in-html5/&quot;&gt;SECTIONING CONTENT IN HTML5 - DIV OR SECTION OR ARTICLE?&lt;/a&gt;&lt;/i&gt;&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/div-section-article-main.png&quot; class=&quot;main-img&quot; /&gt;&lt;/p&gt;
-
-&lt;p&gt;HTML5 стал важной ступенькой для концепции семантического кода. Он отстаивает идею, что документ должен быть структурирован и используемые вами теги должны передавать смысл.&lt;/p&gt;
-
-&lt;p&gt;Помимо прочего, теги &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;section&amp;gt;&lt;/code&gt; и &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt; были введены чтобы сделать области с контентом более значимыми, чем просто &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;div&amp;gt;&lt;/code&gt;. Но в каком случае мы должны использовать эти новые элементы и когда обычный &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;div&amp;gt;&lt;/code&gt; предпочтительнее?&lt;/p&gt;
-
-&lt;h2 id=&quot;section&quot;&gt;Обзор элементов&lt;/h2&gt;
-
-&lt;h3 id=&quot;div&quot;&gt;DIV&lt;/h3&gt;
-
-&lt;p&gt;Элемент &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;div&amp;gt;&lt;/code&gt; является элементом общего назначения. Но это не имеет особого смысла. Его цель заключается в группировке контента, который семантически не связан между собой. По сути, это совершенно бессмысленно для скрин ридеров, поэтому пользоваться данным методом нужно с осторожностью.&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;Мы настоятельно рекомендуем обращаться к элементу div только в крайнем случае, когда больше никакие другие элементы не подходят.&lt;/p&gt;&lt;/blockquote&gt;
-
-&lt;p class=&quot;right&quot;&gt;&lt;i&gt;Рекомендация W3C&lt;/i&gt;&lt;/p&gt;
-&lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;
-
-&lt;p&gt;Элемент &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;div&amp;gt;&lt;/code&gt; в основном используется для группировки контента и и позиционирования при помощи CSS. Например, как контейнер для других элементов.&lt;/p&gt;
-
-&lt;pre&gt;
-&lt;code class=&quot;html&quot;&gt;
-&amp;lt;div class=&amp;quot;modal-container&amp;quot;&amp;gt;&lt;br /&gt;  &amp;lt;section class=&amp;quot;modal&amp;quot;&amp;gt;&lt;br /&gt;    &amp;lt;h1&amp;gt;Modal Title&amp;lt;/h1&amp;gt;&lt;br /&gt;    &amp;lt;p&amp;gt;Text goes here&amp;lt;/p&amp;gt;&lt;br /&gt;  &amp;lt;/section&amp;gt;&lt;br /&gt;&amp;lt;/div&amp;gt;
-&lt;/code&gt;
-&lt;/pre&gt;
-
-&lt;h3 id=&quot;section-1&quot;&gt;SECTION&lt;/h3&gt;
-
-&lt;p&gt;Элемент &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;section&amp;gt;&lt;/code&gt; является немного более конкретным, чем элемент &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;div&amp;gt;&lt;/code&gt;. Он применяется к общему разделу контента, который может быть сгруппирован семантически.&lt;/p&gt;
-
-&lt;blockquote&gt;&lt;p&gt;Главное правило заключается в том, что элемент section уместно использовать только тогда, когда его содержимое может быть явно  сгруппировано.&lt;/p&gt;&lt;/blockquote&gt;
-&lt;p class=&quot;right&quot;&gt;&lt;i&gt;Рекомендация W3C&lt;/i&gt;&lt;/p&gt;
-&lt;div class=&quot;clearfix&quot;&gt;&lt;/div&gt;
-
-&lt;p&gt;Поскольку содержимое тега &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;section&amp;gt;&lt;/code&gt; имеет смысл только когда сгруппировано вместе, оно должно иметь «тему». «Тема» должна быть определена путем включения заголовка в содержимое, часто сразу после открывающего тега.&lt;/p&gt;
-
-&lt;pre&gt;
-&lt;code class=&quot;html&quot;&gt;
-&amp;lt;section class=&amp;quot;newsletter&amp;quot;&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;h1&amp;gt;Subscribe to the Newsletter&amp;lt;/h1&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;form&amp;gt; &amp;lt;!-- ... --&amp;gt; &amp;lt;/form&amp;gt;&lt;br /&gt;&amp;lt;/section&amp;gt;
-&lt;/code&gt;
-&lt;/pre&gt;
-
-&lt;h2 id=&quot;article&quot;&gt;ARTICLE&lt;/h2&gt;
-
-&lt;p&gt;Тег &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt; является даже более конкретным, чем тег &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;section&amp;gt;&lt;/code&gt;. Он так же применяется к семантически связанному разделу контента и должен иметь заголовок. Тем не менее его содержимое должно быть самодостаточным. Это означает что будучи изолированным от остальной части страницы оно по прежнему должно иметь смысл.&lt;/p&gt;
-
-&lt;p&gt;Цель тега &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt; в маркировке контента, например, в разметке блога.&lt;/p&gt;
-
-&lt;pre&gt;
-&lt;code class=&quot;html&quot;&gt;
-&amp;lt;article class=&amp;quot;post&amp;quot;&amp;gt;&lt;br /&gt;  &amp;lt;h1&amp;gt;Article Title&amp;lt;/h1&amp;gt;&lt;br /&gt;  &amp;lt;p&amp;gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit...&amp;lt;/p&amp;gt;&lt;br /&gt;  &amp;lt;p&amp;gt;Quae similitudo in genere etiam humano apparet. Est, ut dicis, inquam...&amp;lt;/p&amp;gt;&lt;br /&gt;&amp;lt;/article&amp;gt;
-&lt;/code&gt;
-&lt;/pre&gt;
-
-&lt;h2 id=&quot;div--section--article&quot;&gt;DIV или SECTION или ARTICLE?&lt;/h2&gt;
-
-&lt;h3 id=&quot;section-2&quot;&gt;Так какой из тегов когда нужно использовать?&lt;/h3&gt;
-
-&lt;p&gt;Если содержимое не является семантически связанным, стоит использовать &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;div&amp;gt;&lt;/code&gt;. Если семантически связанное содержимое может быть автономным, то используйте тег &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt;. В противном случае используйте &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;section&amp;gt;&lt;/code&gt;.&lt;/p&gt;
-
-&lt;p&gt;&lt;img src=&quot;/images/div-section-article.png&quot; style=&quot;display: block; margin: auto;&quot; /&gt;&lt;/p&gt;
-
-&lt;h2 id=&quot;section-3&quot;&gt;Комбинирование элементов&lt;/h2&gt;
-
-&lt;p&gt;Попытаемся объединить различные элементы вместе.&lt;/p&gt;
-
-&lt;h3 id=&quot;article--article&quot;&gt;Article в article&lt;/h3&gt;
-
-&lt;p&gt;Элементы article можно вкладывать друг в друга. И хотя они по прежнему являются самодостаточными, предполагается, что содержимое внутреннего &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt; связано с внешним.&lt;/p&gt;
-
-&lt;pre&gt;
-&lt;code class=&quot;html&quot;&gt;
-&amp;lt;article&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;h1&amp;gt;Article Title&amp;lt;/h1&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;p class=&amp;quot;author&amp;quot;&amp;gt;John Smith&amp;lt;/p&amp;gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;p&amp;gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&amp;lt;/p&amp;gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;article&amp;gt;&lt;br /&gt;&lt;br /&gt;    &amp;lt;h2&amp;gt;Another Article&amp;lt;/h2&amp;gt;&lt;br /&gt;&lt;br /&gt;    &amp;lt;p class=&amp;quot;author&amp;quot;&amp;gt;Jane Doe&amp;lt;/p&amp;gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;    &amp;lt;p&amp;gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&amp;lt;/p&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;/article&amp;gt;&lt;br /&gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;p&amp;gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit.&amp;lt;/p&amp;gt;&lt;br /&gt;&amp;lt;/article&amp;gt;
-&lt;/code&gt;
-&lt;/pre&gt;
-
-&lt;h3 id=&quot;article--section&quot;&gt;Article в section&lt;/h3&gt;
-
-&lt;p&gt;Мы можем так же несколько тегов &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt; разместить внутри &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;section&amp;gt;&lt;/code&gt;. Хорошим примером будет являться страница блога, на которой отображаются последние сообщения. Контейнером для всех последних постов будет тег &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;section&amp;gt;&lt;/code&gt;, в то время как каждый отдельный отрывок записи может быть размечен тегом &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt;.&lt;/p&gt;
-
-&lt;pre&gt;
-&lt;code class=&quot;html&quot;&gt;
-&amp;lt;section&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;h1&amp;gt;Latest Blog Posts&amp;lt;/h1&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;article&amp;gt;&lt;br /&gt;&lt;br /&gt;    &amp;lt;h2&amp;gt;Blog Post Title&amp;lt;/h2&amp;gt;&lt;br /&gt;&lt;br /&gt;    &amp;lt;p&amp;gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &amp;lt;/p&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;/article&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;article&amp;gt;&lt;br /&gt;&lt;br /&gt;    &amp;lt;h2&amp;gt;Blog Post Title&amp;lt;/h2&amp;gt;&lt;br /&gt;&lt;br /&gt;    &amp;lt;p&amp;gt;Lorem ipsum dolor sit amet, consectetur adipiscing elit. &amp;lt;/p&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;/article&amp;gt;&lt;br /&gt;&amp;lt;/section&amp;gt;
-&lt;/code&gt;
-&lt;/pre&gt;
-
-&lt;h3 id=&quot;section--article&quot;&gt;Section в article&lt;/h3&gt;
-
-&lt;p&gt;Каждый индивидуальный тег &lt;code class=&quot;highlighter-rouge&quot;&gt;&amp;lt;article&amp;gt;&lt;/code&gt; может содержать в себе раздел section.  Например, данный пост мог бы быть размечен следующим образом&lt;/p&gt;
-
-&lt;pre&gt;
-&lt;code class=&quot;html&quot;&gt;
-&amp;lt;article&amp;gt;&lt;br /&gt;  &amp;lt;h1&amp;gt;Sectioning Content in HTML5 - div or section or article?&amp;lt;/h1&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;section&amp;gt;&lt;br /&gt;    &amp;lt;h2&amp;gt;Overview of the Elements&amp;lt;/h2&amp;gt;&lt;br /&gt;    &amp;lt;section&amp;gt;&lt;br /&gt;      &amp;lt;h3&amp;gt;div&amp;lt;/h3&amp;gt;&lt;br /&gt;      &amp;lt;p&amp;gt;The div element is the most general purpose element.&amp;lt;/p&amp;gt;&lt;br /&gt;    &amp;lt;/section&amp;gt;&lt;br /&gt;    &amp;lt;section&amp;gt;&lt;br /&gt;      &amp;lt;h3&amp;gt;section&amp;lt;/h3&amp;gt;&lt;br /&gt;      &amp;lt;p&amp;gt;The section element is slightly more specific that a div&amp;lt;/p&amp;gt;&lt;br /&gt;    &amp;lt;/section&amp;gt;&lt;br /&gt;    &amp;lt;section&amp;gt;&lt;br /&gt;      &amp;lt;h3&amp;gt;article&amp;lt;/h3&amp;gt;&lt;br /&gt;      &amp;lt;p&amp;gt;The article element is even more specific than a section&amp;lt;/p&amp;gt;&lt;br /&gt;    &amp;lt;/section&amp;gt;&lt;br /&gt;  &amp;lt;/section&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;section&amp;gt;&lt;br /&gt;    &amp;lt;h2&amp;gt;div or section or article?&amp;lt;/h2&amp;gt;&lt;br /&gt;    &amp;lt;!-- ... --&amp;gt;&lt;br /&gt;  &amp;lt;/section&amp;gt;&lt;br /&gt;&lt;br /&gt;  &amp;lt;section&amp;gt;&lt;br /&gt;    &amp;lt;h2&amp;gt;Combining the Elements&amp;lt;/h2&amp;gt;&lt;br /&gt;    &amp;lt;!-- ... --&amp;gt;&lt;br /&gt;  &amp;lt;/section&amp;gt;&lt;br /&gt;&lt;br /&gt;&amp;lt;/article&amp;gt;
-&lt;/code&gt;
-&lt;/pre&gt;
-</description>
-        <pubDate>Sun, 01 Nov 2015 00:00:00 +0400</pubDate>
-        <link>http://front-end.su/2015/11/01/div-or-section-or-article/</link>
-        <guid isPermaLink="true">http://front-end.su/2015/11/01/div-or-section-or-article/</guid>
+        <link>http://localhost:4000/2015/11/05/new-in-devtools.html</link>
+        <guid isPermaLink="true">http://localhost:4000/2015/11/05/new-in-devtools.html</guid>
       </item>
     
   </channel>

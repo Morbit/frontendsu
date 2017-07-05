@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Bower &#8211; </title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Менеджер зависимостей на Node.js">
+    <meta name="author" content="">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://localhost:4000/2015/09/09/bower.html">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for " href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201707051528" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Bower">
+    <meta property="og:description" content="">
+    <meta property="og:url" content="http://localhost:4000/2015/09/09/bower.html">
+    <meta property="og:site_name" content="">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Bower" />
+    <meta name="twitter:description" content="Менеджер зависимостей на Node.js" />
+    <meta name="twitter:url" content="http://localhost:4000/2015/09/09/bower.html" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://localhost:4000" class="site-title"></a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Bower</h1>
+  <span class="post-meta">Sep 9, 2015</span><br>
+    
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p><img src="/images/bower.jpg" class="main-img" /></p>
+
+<p><a href="http://bower.io/">Bower</a> —  это менеджер пакетов на Node.js.</p>
+
+<p main="">Разрабатывая тот или иной проект вы, как правило, достаточно часто используете библиотеки сторонних разработчиков. Как обычно происходит процесс подключения? Вы идете на сайт разработчика или гитхаб репозиторий, скачиваете себе исходники, помешаете их в папку с проектом, прописываете путь до библиотеки. В лучшем случае ссылки проставляются с использованием CDN. Процесс достаточно утомительный, правда?</p>
+<p aside="">Изначально, проект был реализован специалистами из компании Twitter. Но сейчас разработка ведется сообществом.</p>
+
+<p>Bower помогает значительно упростить и ускорить эти операции.</p>
+
+<p>Итак, если вам понадобилось поставить какую-либо стороннюю библиотеку, там достаточно инициализировать bower у себя внутри проекта и набрать в консоли команду для установки.
+Спустя некоторое время необходимая библиотека будет скачала, а ее исходники окажутся в директории bower_components.</p>
+
+<h2 id="section">Принцип работы</h2>
+
+<p>Если вам приходилось сталкиваться с ОС Linux, то вы, наверняка, знаете что достаточно часто программное обеспечение приходится устанавливать через консоль. Например, при помощи apt-get.</p>
+
+<p>Вы пишете в консоли <code class="bash">apt-get install &lt;appname&gt;</code> проходит некоторое время и вы получаете установленный дистрибутив ПО.</p>
+
+<p>Похожим образом работает и Bower. Вы устанавливаете его себе в систему, а затем просто выполняете команду на установку пакета в консоли и через некоторое время дистрибутив окажется у вас на компьютере.</p>
+
+<h2 id="section-1">Установка</h2>
+
+<p>Для того чтобы начать знакомство с Bower вам нужно, чтобы были установлены Node.js и npm (второй автоматически входит в состав первого). Если он у вас уже установлен, то перейдите в консоли в директорию с проектом и наберите следующую строчку:</p>
+
+<pre>
+	<code class="bash">npm install -g bower</code>
+</pre>
+
+<p>Для установки какого-либо пакета используются команды вида</p>
+
+<pre>
+	<code class="bash">bower install &lt;package-name&gt;</code>
+</pre>
+
+<p>Т.е. для того чтобы установить себе самую последнюю версию библиотеки jQuery нужно набрать</p>
+
+<pre>
+	<code class="bash">bower install jquery</code>
+</pre>
+
+<p>В директории вашего проекта появится папка bower_components с поддиректорией jquery.</p>
+
+<h3 id="section-2">Указание конкретной версии</h3>
+
+<p>Бывают так же ситуации (с тем же jQuery) что вам необходимо подключить какую-то конкретную версию. При помощи Bower это делается следующим образом:</p>
+
+<pre>
+	<code class="bash">bower install &lt;package-name&gt;#&lt;version-number&gt;</code>
+</pre>
+
+<p>Пример</p>
+
+<pre>
+	<code class="bash">bower install jquery#1.9.1</code>
+</pre>
+
+<h2 id="section-3">Установка пакетов из различных источников</h2>
+
+<p>Чуть выше мы поднимали вопрос о том, что какого-то плагина может не оказаться в Bower репозитории.
+Этот случай разработчики менеджера предусмотрели добавили возможность загружать компоненты из различных источников.</p>
+
+<pre>
+	<code class="bash">
+# загрузить пакет из репозитория
+$ bower install jquery
+
+# загрузить используя короткое имя GitHub
+$ bower install desandro/masonry
+
+# загрузить используя прямую ссылку Git-репозиторий
+$ bower install git://github.com/user/package.git
+
+# загрузить по ссылке
+$ bower install http://example.com/script.js
+	</code>
+</pre>
+
+<h2 id="section-4">Удаление пакетов</h2>
+
+<p>Для удаления установленных пакетов используются следующий синтаксис</p>
+
+<pre>
+	<code class="bash">bower uninstall &lt;package-name&gt;</code>
+</pre>
+
+<p>Пример:</p>
+
+<pre>
+	<code class="bash">bower uninstall jquery</code>
+</pre>
+
+<h2 id="section-5">Работа с установленными пакетами</h2>
+
+<p>Выше мы с вами рассмотрели синтаксис установки из различных мест, удаления пакетов и выбора конкретной версии.
+Логично будет предположить, что однажды вам захочется узнать список всех установленных пакетов, а так же узнать пути до каждого из них.</p>
+
+<p><code class="highlighter-rouge">bower list</code> выведет список всех установленных пакетов а при помощи ключа <code class="highlighter-rouge">--path</code> вы так же получите путь до нужного компонента.</p>
+
+<p>Итак, вот вы установили все необходимые пакеты в вашем проекте. Что теперь? Теперь вы можете не таскать из за собой, а устанавливать при помощи Bower. Т.е. если вы ведете разработку в репозитории, то вам не нужно коммитить в него еще и исходники сторонних пакетов. Для того, чтобы в дальнейшем просто и быстро установить все зависимости, вам нужен всего один файл —  bower.json</p>
+
+<p>В нем будет храниться вся необходимая информация о том какие пакеты используются в проекте, каких версий и откуда их нужно загружать. Если ваши зависимости уже установлены, то вам нужно только лишь выполнить команду <code class="highlighter-rouge">bower init</code>.</p>
+
+<h2 id="section-6">Ссылки</h2>
+
+<ul>
+  <li><a href="http://bower.io/">Официальный сайт проекта</a></li>
+  <li><a href="http://bower.io/search/">Поиск пакетов для bower</a></li>
+</ul>
+
+<h2 id="section-7">Видео</h2>
+
+<iframe width="840" height="460" src="https://www.youtube.com/embed/uWUS-mOWoaE" frameborder="0" allowfullscreen=""></iframe>
+
+</article>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>
