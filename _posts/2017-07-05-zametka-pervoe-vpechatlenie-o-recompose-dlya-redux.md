@@ -2,7 +2,6 @@
 layout:     post
 title:      'Заметка: Первое впечатление о reselect для redux'
 date:       2017-03-15
-summary:    Продолжение статьи про линтинг HTML от Ire Aderinokun
 categories: jekyll pixyll
 permalink: /zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html
 ---

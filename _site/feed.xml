@@ -3,8 +3,8 @@
   <channel>
     <title>front-end.su</title>
     <description>front-end разработка в деталях</description>
-    <link>http://localhost:4000/</link>
-    <atom:link href="http://localhost:4000/feed.xml" rel="self" type="application/rss+xml" />
+    <link>http://front-end.su/</link>
+    <atom:link href="http://front-end.su/feed.xml" rel="self" type="application/rss+xml" />
     
       <item>
         <title>Заметка: Первое впечатление о reselect для redux</title>
@@ -104,8 +104,8 @@ const mapStateToProps = state =&amp;gt; ({
 Пишите мне в &lt;a href=&quot;https://twitter.com/pvpshoot&quot;&gt;twitter&lt;/a&gt; если хотите подискутировать на эту тему&lt;/p&gt;
 </description>
         <pubDate>Wed, 15 Mar 2017 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html</link>
-        <guid isPermaLink="true">http://localhost:4000/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html</guid>
+        <link>http://front-end.su/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html</link>
+        <guid isPermaLink="true">http://front-end.su/zametka-pervoe-vpechatlenie-o-recompose-dlya-redux-html</guid>
       </item>
     
       <item>
@@ -238,8 +238,8 @@ img:not([alt])::after {
 &lt;p&gt;Спасибо &lt;a href=&quot;https://twitter.com/ffoodd_fr&quot;&gt;Gaël Poupard&lt;/a&gt; за созданный им &lt;a href=&quot;http://ffoodd.github.io/a11y.css/&quot;&gt;a11y.css&lt;/a&gt;!&lt;/p&gt;
 </description>
         <pubDate>Wed, 15 Mar 2017 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/making-alix-a-chrome-extension-for-linting-html</link>
-        <guid isPermaLink="true">http://localhost:4000/making-alix-a-chrome-extension-for-linting-html</guid>
+        <link>http://front-end.su/making-alix-a-chrome-extension-for-linting-html</link>
+        <guid isPermaLink="true">http://front-end.su/making-alix-a-chrome-extension-for-linting-html</guid>
       </item>
     
       <item>
@@ -396,8 +396,8 @@ link[rel=&quot;stylesheet&quot;][type=&quot;text/css&quot;] { ... }
 &lt;p&gt;Наконец, мы можем использовать селектор, чтобы выделить элементы с атрибутами которые устарели или не являются обязательными.&lt;/p&gt;
 </description>
         <pubDate>Sun, 12 Mar 2017 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/linting-html-using-css</link>
-        <guid isPermaLink="true">http://localhost:4000/linting-html-using-css</guid>
+        <link>http://front-end.su/linting-html-using-css</link>
+        <guid isPermaLink="true">http://front-end.su/linting-html-using-css</guid>
       </item>
     
       <item>
@@ -420,8 +420,8 @@ link[rel=&quot;stylesheet&quot;][type=&quot;text/css&quot;] { ... }
 &lt;p&gt;Если вы хотите посмотреть состояние тех или иных возможностей и их уровень,  можете сделать это в документе &lt;a href=&quot;https://www.w3.org/Style/CSS/current-work&quot;&gt;Current Work&lt;/a&gt;. Чтобы разобраться в различных статусах, советуем обратиться &lt;a href=&quot;https://www.w3.org/2005/10/Process-20051014/tr#maturity-levels&quot;&gt;к этому документу&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Tue, 27 Sep 2016 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/why-there-is-no-css4</link>
-        <guid isPermaLink="true">http://localhost:4000/why-there-is-no-css4</guid>
+        <link>http://front-end.su/why-there-is-no-css4</link>
+        <guid isPermaLink="true">http://front-end.su/why-there-is-no-css4</guid>
       </item>
     
       <item>
@@ -649,8 +649,8 @@ h1 { content: call($foo, 'bar'); }
 &lt;p&gt;Спасибо &lt;a href=&quot;https://medium.com/u/66dddc4d84eb&quot;&gt;Chris Eppstein&lt;/a&gt; за то что посмотрел и предложил использовать function-exists для обеспечения пути обновления для авторов библиотек.&lt;/p&gt;
 </description>
         <pubDate>Tue, 20 Sep 2016 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/sass-first-class-functions</link>
-        <guid isPermaLink="true">http://localhost:4000/sass-first-class-functions</guid>
+        <link>http://front-end.su/sass-first-class-functions</link>
+        <guid isPermaLink="true">http://front-end.su/sass-first-class-functions</guid>
       </item>
     
       <item>
@@ -719,8 +719,8 @@ open http://localhost:8000 - откройте в любом современно
 &lt;p&gt;Как уже упоминалось выше, проект находится в разработке, мы будем благодарны за вашу помощь в создании, возможно, лучшего отладчика. Если вы хотите присоединиться к нам, пожалуйста, ознакомьтесь с &lt;a href=&quot;https://github.com/devtools-html/debugger.html/blob/master/CONTRIBUTING.md&quot;&gt;руководством контрибьютера&lt;/a&gt;.&lt;/p&gt;
 </description>
         <pubDate>Sun, 18 Sep 2016 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/introducing-debugger-html</link>
-        <guid isPermaLink="true">http://localhost:4000/introducing-debugger-html</guid>
+        <link>http://front-end.su/introducing-debugger-html</link>
+        <guid isPermaLink="true">http://front-end.su/introducing-debugger-html</guid>
       </item>
     
       <item>
@@ -961,8 +961,8 @@ $(function(){
 &lt;/ul&gt;
 </description>
         <pubDate>Mon, 13 Jun 2016 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/2016/06/13/creating-your-first-desktop-app-with-electron/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/06/13/creating-your-first-desktop-app-with-electron/</guid>
+        <link>http://front-end.su/2016/06/13/creating-your-first-desktop-app-with-electron/</link>
+        <guid isPermaLink="true">http://front-end.su/2016/06/13/creating-your-first-desktop-app-with-electron/</guid>
       </item>
     
       <item>
@@ -1223,8 +1223,8 @@ grid-template-columns: [column 1 width]  [column 2 width]  [column 3 width];
 &lt;/ul&gt;
 </description>
         <pubDate>Sun, 05 Jun 2016 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/2016/06/05/css-grid-holy-grail/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/06/05/css-grid-holy-grail/</guid>
+        <link>http://front-end.su/2016/06/05/css-grid-holy-grail/</link>
+        <guid isPermaLink="true">http://front-end.su/2016/06/05/css-grid-holy-grail/</guid>
       </item>
     
       <item>
@@ -1351,8 +1351,8 @@ alert(&quot;вызов после загрузки изображения&quot;)
 &lt;/pre&gt;
 </description>
         <pubDate>Fri, 12 Feb 2016 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/2016/02/12/load-events/</link>
-        <guid isPermaLink="true">http://localhost:4000/2016/02/12/load-events/</guid>
+        <link>http://front-end.su/2016/02/12/load-events/</link>
+        <guid isPermaLink="true">http://front-end.su/2016/02/12/load-events/</guid>
       </item>
     
       <item>
@@ -1415,8 +1415,8 @@ alert(&quot;вызов после загрузки изображения&quot;)
 &lt;p&gt;&lt;i&gt;Все фото и видео материалы взяты с сайта &lt;a href=&quot;https://developers.google.com/web/updates/2015/10/devtools-digest-efficient-element-edits&quot;&gt;developers.google.com&lt;/a&gt;&lt;/i&gt;&lt;/p&gt;
 </description>
         <pubDate>Thu, 05 Nov 2015 00:00:00 +0400</pubDate>
-        <link>http://localhost:4000/2015/11/05/new-in-devtools/</link>
-        <guid isPermaLink="true">http://localhost:4000/2015/11/05/new-in-devtools/</guid>
+        <link>http://front-end.su/2015/11/05/new-in-devtools/</link>
+        <guid isPermaLink="true">http://front-end.su/2015/11/05/new-in-devtools/</guid>
       </item>
     
   </channel>
