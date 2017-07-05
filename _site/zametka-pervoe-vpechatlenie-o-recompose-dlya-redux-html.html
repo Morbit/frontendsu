@@ -1,0 +1,94 @@
+<p>Всем привет, меня зовут <a href="https://twitter.com/pvpshoot">Миша</a>, и автор этого блога сподвиг меня написать сюда заметку, которой я поделился в нашем фронтенд чатике слака.
+Речь пойдет о библиотеке <a href="https://github.com/reactjs/reselect">Reselect</a> для <a href="https://github.com/reactjs/redux">Redux</a>.
+Если вы уже используете в работе recompose то смело закрывайте статью, и читайте новости поинтереснее этой.
+Всех остальных призываю к прочтению</p>
+
+<p>Итак если вы наверняка часто видели подобную конструкицию в ваших компонентах и она успела приесться:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const mapStateToProps = state =&gt; ({
+    couponsList: state.couponsReducer.couponsList,
+})
+</code></pre>
+</div>
+
+<p>Все что я сделал, это передал массив купонов из редакс стора в пропсы коспонента.
+Раньше я ограничивался подобным, и всю логику по дальнейшиму разруливанию я делал внутри компонента.
+В этом кейсе мне нужно было отфильтровать только валидные купоны, и посчитать общуюю сумму дискаунта.</p>
+
+<p>Товарищ по работе намекнул на реселект, и я решил попробовать.
+Итак я преступил к работе, для начала я вынес получение массива куппонов в отдельную функцию</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const couponsSelector = state =&gt; state.couponsReducer.couponsList
+const mapStateToProps = state =&gt; ({
+    couponsList: couponsSelector(state),
+})
+</code></pre>
+</div>
+
+<p>Пока изменений мало но мысль заложена хорошая, у нас есть чистая функция, которая получает стейт идостает из него наш массив.
+Эту функцию мы можем вынести в отдельный файл, в папочке selectors рядом с нашим редьюсерами и импортить их в любом нужном нам компоненте.
+Но соглаитесь, пока все это оверхед</p>
+
+<p>Итак продолжаем, обратимся к reselect для фильтрации только валидных куппонов:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const couponsSelector = state =&gt; state.couponsReducer.couponsList
+const validCouponsListSelector = createSelector(
+    couponsSelector,
+    arr =&gt; validateCoupons(arr),
+)
+const mapStateToProps = state =&gt; ({
+    couponsList: couponsSelector(state),
+    validCouponsList: validCouponsListSelector(state),
+})
+</code></pre>
+</div>
+
+<p>Опа, что это мы сейчас сделали?
+А мы добавили новый селектор, который в качесве 1 аргумента получает другой селектор, а последним функцию обработчик.
+Вот пример из док:
+    const taxSelector = createSelector(
+        subtotalSelector,
+        taxPercentSelector,
+        (subtotal, taxPercent) =&gt; subtotal * (taxPercent / 100)
+    )</p>
+
+<p>Сечете? мы передали в функцию <code class="highlighter-rouge">createSelector</code> два наших селектора, а вконце получили их значение в функции обработчике</p>
+
+<p>Итак уже есть пару селекторов для моего компонента, но нужно больше, мне нужно получить полную скидку, вперед:
+    const totalDiscountSelector = createSelector(
+        validCouponsListSelector,
+        coupons =&gt; calculateSumm(coupons),
+    )
+    const mapStateToProps = state =&gt; ({
+        couponsList: couponsSelector(state),
+        validCouponsList: validCouponsListSelector(state),
+        totalDiscount: totalDiscountSelector(state),
+    })</p>
+
+<p>Нам не пришлось сохранять промежуточное значение <code class="highlighter-rouge">validCouponsList</code> для дальнейшего использования, а ведь и оно тоже нам пригодится
+Этих селекторов может быть куча, так я расширил свое приложение следующим образом:</p>
+
+<div class="highlighter-rouge"><pre class="highlight"><code>const limitedDiscountSelector = createSelector(
+    totalDiscountSelector,
+    discountTypeSelector,
+    discountLimiter,
+    (total, discType, limiter) =&gt; pleaseLimitMydiscount(total, discType, limiter)
+);
+const mapStateToProps = state =&gt; ({
+    couponsList: couponsSelector(state),
+    validCouponsList: validCouponsListSelector(state),
+    discountType: discountTypeSelector(state),
+    discountLimiter: discountLimiterSelector(state),
+    totalDiscount: totalDiscountSelector(state),
+    limitedDiscount: limitedDiscountSelector(state), 
+})
+</code></pre>
+</div>
+
+<p>Пользователь может захотеть задать максимальную допустимую скидку для купонов, а они ведь могут быть разных видов, одни процентные скидки, другие денежные. 
+По дефлоту реселект позволяет кешировать данные, и делет их проверку внутри себя, но вы вольны сделать свою собственную мемоизацию.
+Я вынес все селеторы в отельный модуль, для удобного хранения и доступа из других компонентов.
+Освободил компонент от лишнего кода, что облегчело понимание что же он должен делать, а не как.
+Спасибо за чтение.
+Рекомендую рекомпоз к ознакомлениею и дальнейшему использованию!
+Пишите мне в <a href="https://twitter.com/pvpshoot">twitter</a> если хотите подискутировать на эту тему</p>
