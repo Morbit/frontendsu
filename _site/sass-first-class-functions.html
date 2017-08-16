@@ -10,11 +10,11 @@
     
     <meta name="keywords" content=""/>
     
-    <link rel="canonical" href="http://localhost:4000/sass-first-class-functions">
+    <link rel="canonical" href="http://front-end.su/sass-first-class-functions">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201704281430" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201708161926" type="text/css">
 
     
     <meta name='yandex-verification' content='7f003fb272100188' />
@@ -26,7 +26,7 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="Разбираемся с функциями первого класса в Sass 3.5">
     <meta property="og:description" content="front-end разработка в деталях">
-    <meta property="og:url" content="http://localhost:4000/sass-first-class-functions">
+    <meta property="og:url" content="http://front-end.su/sass-first-class-functions">
     <meta property="og:site_name" content="front-end.su">
 
     <!-- Twitter Card -->
@@ -34,7 +34,7 @@
     
     <meta name="twitter:title" content="Разбираемся с функциями первого класса в Sass 3.5" />
     <meta name="twitter:description" content="Что ждет разработчиков библиотек под Sass с выходом новой версии?" />
-    <meta name="twitter:url" content="http://localhost:4000/sass-first-class-functions" />
+    <meta name="twitter:url" content="http://front-end.su/sass-first-class-functions" />
 
     <!-- Icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -63,7 +63,7 @@
     <header class="site-header px2 px-responsive">
   <div class="mt2 wrap">
     <div class="measure">
-      <a href="http://localhost:4000" class="site-title">front-end.su</a>
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
       <nav class="site-nav">
         <a href="http://fronthub.ru">Конференция FrontHub</a>
 <a href="/contact/">Контакты</a>
@@ -181,7 +181,7 @@ call('foo', 'bar'); // -&gt; 'bar'
 
 <p>Давайте посмотрим как работать со вторым вариантом (<strong>call()</strong>) в Sass 3.5.0 и выше!</p>
 
-<p>##Вызов функции в Sass 3.5 и выше</p>
+<h2 id="sass-35--">Вызов функции в Sass 3.5 и выше</h2>
 
 <p>В Sass 3.5 функцию необходимо вызывать при помощи <strong>call()</strong> передав функцию первого класса при помощи <strong>get-function</strong>.</p>
 
@@ -251,7 +251,7 @@ h1 { content: "bar"; } output-assign-function-to-variable.css
 
 <p>На первый взгляд, мне показалось хорошей идеей иметь возможность писать <strong>$a(b)</strong> в Sass, но могут быть последствия, которые мы не учли! Давайте посмотрим, что будет в следующих версиях.</p>
 
-<p>##Написание кода, совместимого со всеми версиями Sass</p>
+<h2 id="sass">Написание кода, совместимого со всеми версиями Sass</h2>
 
 <p><img src="https://cdn-images-1.medium.com/max/800/1*QqHJIgeZyYw-uezoAzR1AQ.jpeg" alt="" /></p>
 
@@ -296,7 +296,7 @@ h1 { content: call($foo, 'bar'); }
 <p>Ссылка на GitHub:
 <a href="https://github.com/kaelig/sass-safe-get-function">https://github.com/kaelig/sass-safe-get-function</a></p>
 
-<p>##Подведем итоги</p>
+<h2 id="section-1">Подведем итоги</h2>
 
 <p><img src="https://cdn-images-1.medium.com/max/800/1*xmjxJl4e89aFYBGA1V8xTQ.jpeg" alt="" /></p>
 
@@ -311,7 +311,7 @@ h1 { content: call($foo, 'bar'); }
 
 <p>Хотите поиграть с get-function? Я сделал песочницу в репозитории   <a href="https://github.com/kaelig/sass-first-class-functions">https://github.com/kaelig/sass-first-class-functions</a>, развлекайтесь!</p>
 
-<h3 id="section-1">Источники</h3>
+<h3 id="section-2">Источники</h3>
 
 <ul>
   <li><a href="http://blog.sass-lang.com/posts/809572-sass-35-release-candidate">Sass 3.5.0 Release Candidate</a></li>
@@ -321,7 +321,7 @@ h1 { content: call($foo, 'bar'); }
   <li><a href="https://github.com/kaelig/sass-safe-get-function">safe-get-function Sass utility on GitHub</a></li>
 </ul>
 
-<h3 id="section-2">Благодарность</h3>
+<h3 id="section-3">Благодарность</h3>
 
 <p>Спасибо <a href="https://medium.com/u/66dddc4d84eb">Chris Eppstein</a> за то что посмотрел и предложил использовать function-exists для обеспечения пути обновления для авторов библиотек.</p>
 

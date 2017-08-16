@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Function composition &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Прошлый раз я показал как можно создавать функции первого класса, а в этой заметке я покажу как их можно круто пользовать.">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://front-end.su/jekyll/pixyll/2017/08/16/function-composition/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201708161926" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Function composition">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://front-end.su/jekyll/pixyll/2017/08/16/function-composition/">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Function composition" />
+    <meta name="twitter:description" content="Прошлый раз я показал как можно создавать функции первого класса, а в этой заметке я покажу как их можно круто пользовать." />
+    <meta name="twitter:url" content="http://front-end.su/jekyll/pixyll/2017/08/16/function-composition/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Function composition</h1>
+  <span class="post-meta">Aug 16, 2017</span><br>
+    
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Йо камрады =)
+Прошлый раз я показал как можно создавать функции первого класса, а в этой заметке я покажу как их можно круто пользовать.</p>
+
+<p>Есть вот такие вот умные определения:
+&gt;«Композиция» — (от лат. compositio — составление — связывание) объединение, составление, сопоставление, расположение, сложение, соединение частей в единое целое в определенном порядке.</p>
+
+<blockquote>
+  <p>В математике композиция функций (суперпози́ция фу́нкций) — это применение одной функции к результату другой.</p>
+</blockquote>
+
+<p>На деле вы постоянно встречали подобный прием:</p>
+<pre>
+<code class="js">
+const x1 = 1;
+const x2 = add(x1, 1);
+const x3 = add(x1, 2);
+const x4 = add(x1, 3);
+const result = x4;
+</code>
+</pre>
+
+<p>Для того чтобы не создавать лишних констант или переменных, мы можем сделать сосиску вызовов функций =)</p>
+<pre>
+<code class="js">
+const result = add(3, add(2, add(1, 1)));
+</code>
+</pre>
+
+<p>На мой взгляд выглядит лучше, ибо места занимает меньше, никаких лишних переменных не придумали, но чем больше действий надо сделать над входными данными, тем длиннее эта сосиска становится, поддерживать такой код станет труднее, разбираться в нем никто не захочет, в отличии от 1 примера где каждый шаг четко прослеживается.</p>
+
+<p>В функциональных языках есть функции помощники, они берут на себя заботу о лишней вложенности нашей функции, и как работяги на стройке передают один кирпичик другому рабочему.
+Разберем функцию <code class="highlighter-rouge">pipe</code> и <code class="highlighter-rouge">compose</code> из моей любимой рамды конечно же =)
+Перепишем пример выше:</p>
+<pre>
+<code class="js">
+const result = pipe(
+    add(1), // 1 =&gt; n =&gt; 1 + n;
+    add(2), // 2 =&gt; n =&gt; 2 + n;
+    add(3), // 3 =&gt; n =&gt; 3 + n;
+)
+result(1);
+</code>
+</pre>
+<p>Не трудно догадаться что делает функция с название труба =) она как водопроводная труба передает данные из начала в конец, добавляя наши примеси где нужно.
+Вы же помните нашу каррированую функцию <code class="highlighter-rouge">add = x =&gt; y =&gt; x + y</code>? мы частично вызвали функцию добавления, и все что осталось нам, передать в нее последний аргумент, чтобы она завелась.
+Вот так вот схематически выглядит функция pipe:</p>
+<pre>
+<code class="js">
+function pipe (f,g,j) {
+  return function(x) {
+    return j(g(f(x)));
+  };
+};
+</code>
+</pre>
+<p>0 ноль магии, всю заботу о нечеловекочитаемой сосиске взяла на себя она.
+с функцией add то все понятно, она меленькая, простая, тупая. тут не интересно, нужно больше практики,
+Вчера я добавил в своего бота для телеграм возможность рандомного выбора темплейта для сообщения, и вот как я это сделал</p>
+<pre>
+<code class="js">
+const STRINGS = [
+  `Тут *|name|* \nРешил заказать песню *|track|*`,
+  `Ну зачем ты *|name|* \nпросишь эту фигню? *|track|*`,
+  `Вадик, тут твой друган *|name|* \nопять фигню просит *|track|*`,
+  `Вова, ты знаешь этого чела? *|name|* \nон пестню хочет *|track|*`,
+  `Я *|name|* \nжелаю поплясать под *|track|*`
+];
+
+const randomTpl = arr =&gt; arr[Math.floor(Math.random() * arr.length)];
+
+const stringTpl = ({ name, track }) =&gt; pipe(
+    randomTpl, // передаем массив строк, и выбираем 1 случайную
+    replace("|track|", track), // функция реплейс из рамды, принимает 3 аргумента: шаблон, строка на которую менять, и ПОСЛЕДНИМ аргументом строку в которой менять
+    replace("|name|", name), // все функции тут возвращают НОВОЕ значение, и никак не мутируют старое
+)(STRINGS);
+</code>
+</pre>
+<p>Теперь этот бот умеет ругаться по разному, и почти в функциональном стиле =)</p>
+
+<p>Давайте еще пример, украл задачу с кодварс, нужна функция проверяющая является ли слово палиндромом
+&gt;Слово или фраза, которые одинаково читаются слева направо и справа налево.</p>
+
+<p>Решений в интернете полно, но мы ща очень лаконично напишем свое:</p>
+
+<pre>
+<code class="js">
+const isPalindrom = str =&gt; {
+    // сначала нужно развернуть строку
+    const reverseString = pipe(
+        split(''), // конвертируем строку в массив
+        reverse, // разворачиваем массив
+        join('') // склеиваем обратно
+    );
+    return str === reverseString(str);
+}
+</code>
+</pre>
+<p>Лучшей читаемости я наверно не видал в жизни, каждый шаг это чистая функция которая делает всего 1 вещь, и передает свой результат дальше.
+Представьте как круто то, что вы можете на создавать таких промежуточных функций, и так же склеивать их в 1 с помощью <code class="highlighter-rouge">pipe</code> и <code class="highlighter-rouge">compose</code>;</p>
+
+<p>Про <code class="highlighter-rouge">compose</code>: Делает она тоже самое что и <code class="highlighter-rouge">pipe</code> только функции вызываются справа налево, то есть в обратном порядке.
+у нас в команде, мы пришли к мнению, что pipe читается легче.</p>
+<pre>
+<code class="js">
+compose(
+    C,
+    B,
+    A,
+)('kek');
+</code>
+</pre>
+
+<p>Итак лонгрид опять получился, на неделе покидаю интересных примеров, а может быть и задачек маленьких =))
+Следующий раз покажу как можно использовать оч крутую функцию <code class="highlighter-rouge">evolve</code> из рамды</p>
+
+
+</article>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>

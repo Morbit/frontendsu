@@ -10,11 +10,11 @@
     
     <meta name="keywords" content=""/>
     
-    <link rel="canonical" href="http://localhost:4000/linting-html-using-css">
+    <link rel="canonical" href="http://front-end.su/linting-html-using-css">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201704281430" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201708161926" type="text/css">
 
     
     <meta name='yandex-verification' content='7f003fb272100188' />
@@ -26,7 +26,7 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="Линтинг HTML с помощью CSS">
     <meta property="og:description" content="front-end разработка в деталях">
-    <meta property="og:url" content="http://localhost:4000/linting-html-using-css">
+    <meta property="og:url" content="http://front-end.su/linting-html-using-css">
     <meta property="og:site_name" content="front-end.su">
 
     <!-- Twitter Card -->
@@ -34,7 +34,7 @@
     
     <meta name="twitter:title" content="Линтинг HTML с помощью CSS" />
     <meta name="twitter:description" content="Интересный способ проверки HTML от Ire Aderinokun" />
-    <meta name="twitter:url" content="http://localhost:4000/linting-html-using-css" />
+    <meta name="twitter:url" content="http://front-end.su/linting-html-using-css" />
 
     <!-- Icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -63,7 +63,7 @@
     <header class="site-header px2 px-responsive">
   <div class="mt2 wrap">
     <div class="measure">
-      <a href="http://localhost:4000" class="site-title">front-end.su</a>
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
       <nav class="site-nav">
         <a href="http://fronthub.ru">Конференция FrontHub</a>
 <a href="/contact/">Контакты</a>
@@ -109,7 +109,7 @@
 
 <p>Существует множество способов проверки HTML для обнаружения и устранения проблем. К примеру, можно воспользоваться <a href="https://validator.w3.org/">валидатором W3C</a>. Но есть еще одна вещь которую мы с легкостью можем интегрировать в процесс разработки — использовать некоторые усовершенствованные CSS селекторы для выделения потенциально проблемных областей. Ниже мы рассмотрим несколько примеров, которые помогут нам в этом.</p>
 
-<p>##Встроенные стили</p>
+<h2 id="section">Встроенные стили</h2>
 
 <pre>
 <code class="css">
@@ -123,7 +123,7 @@
 
 <p>Выбрав проблемные элементы, мы можем применить к ним оформление, чтобы сделать их заметными на странице, например, добавить красную рамку.</p>
 
-<p>##Неисправные или отсутствующие ссылки</p>
+<h2 id="section-1">Неисправные или отсутствующие ссылки</h2>
 
 <pre>
 <code class="css">
@@ -136,7 +136,7 @@ a[href*="javascript:void(0)"] { … }
 
 <p>Эти селекторы выделяют ссылки, которые либо не содержат атрибута <code class="highlighter-rouge">href</code>, либо он не несет смысла.</p>
 
-<p>##Недоступные изображения</p>
+<h2 id="section-2">Недоступные изображения</h2>
 
 <pre>
 <code class="css">
@@ -150,7 +150,7 @@ img:not([alt]) { ... }
 
 <pre><code class="css">img[alt=""] { ... }</code></pre>
 
-<p>##Отсутствие языка документа</p>
+<h2 id="section-3">Отсутствие языка документа</h2>
 
 <pre>
 <code class="css">
@@ -166,7 +166,7 @@ html[lang=""] { ... }
 <blockquote class="twitter-tweet" data-lang="ru"><p lang="en" dir="ltr">Share <a href="https://twitter.com/HTeuMeuLeu">@HTeuMeuLeu</a>&#39;s video to show why setting a default language (eg. lang=&quot;en&quot;) is important. 😂 <a href="https://t.co/tjn8GvPVKM">https://t.co/tjn8GvPVKM</a></p>&mdash; overflow: heydon (@heydonworks) <a href="https://twitter.com/heydonworks/status/834714116715663361">23 февраля 2017 г.</a></blockquote>
 <script async="" src="//platform.twitter.com/widgets.js" charset="utf-8"></script>
 
-<p>##Неправильная кодировка</p>
+<h2 id="section-4">Неправильная кодировка</h2>
 
 <pre>
 <code class="css">
@@ -186,7 +186,7 @@ meta[charset="UTF-8"]:not(:first-child) { ... }
 </code>
 </pre>
 
-<p>##Недопустимые атрибуты Viewport</p>
+<h2 id="viewport">Недопустимые атрибуты Viewport</h2>
 
 <pre>
 <code class="css">
@@ -198,7 +198,7 @@ meta[name="viewport"][content*="minimum-scale"] { ... }
 
 <p>Этот селектор необходимо использовать для выделения недопустимых значений viewport. Как правило, рекомендуется избегать ограничения возможности пользователю манипулировать областью просмотра, масштабируя ее.  Таким образом выражения <code class="highlighter-rouge">user-scalable=no</code> , <code class="highlighter-rouge">maximum-scale</code> или <code class="highlighter-rouge">minimum-scale</code> никогда не должны использоваться.</p>
 
-<p>##Немаркированные элементы формы</p>
+<h2 id="section-5">Немаркированные элементы формы</h2>
 
 <pre>
 <code class="css">
@@ -232,7 +232,7 @@ textarea:not([name]) { ... }
 
 <p>Этот селектор выделяет теги form, у которых отсутствуют оба атрибута — <code class="highlighter-rouge">name</code> и <code class="highlighter-rouge">id</code>.</p>
 
-<p>##Пустые интерактивные элементы</p>
+<h2 id="section-6">Пустые интерактивные элементы</h2>
 
 <pre>
 <code class="css">
@@ -243,7 +243,7 @@ a:empty { ... }
 
 <p>Интерактивные элементы, такие как ссылки или кнопки, обычно размечаются их контентом. Хотя эти элементы можно размечать с помощью других методов, таких как атрибут <code class="highlighter-rouge">aria-label</code>, ситуация, когда теги не содержат контента, скорее всего признак чего-то неправильного. Этот селектор выделяет любые ссылки и кнопки без содержимого.</p>
 
-<p>##Необязательные или устаревшие атрибуты</p>
+<h2 id="section-7">Необязательные или устаревшие атрибуты</h2>
 
 <pre>
 <code class="css">

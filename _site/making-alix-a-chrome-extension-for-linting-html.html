@@ -10,11 +10,11 @@
     
     <meta name="keywords" content=""/>
     
-    <link rel="canonical" href="http://localhost:4000/making-alix-a-chrome-extension-for-linting-html">
+    <link rel="canonical" href="http://front-end.su/making-alix-a-chrome-extension-for-linting-html">
     <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
 
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/css/pixyll.css?201704281430" type="text/css">
+    <link rel="stylesheet" href="/css/pixyll.css?201708161926" type="text/css">
 
     
     <meta name='yandex-verification' content='7f003fb272100188' />
@@ -26,7 +26,7 @@
     <meta property="og:type" content="article">
     <meta property="og:title" content="Создание Alix, Chrome-расширения для линтинга HTML">
     <meta property="og:description" content="front-end разработка в деталях">
-    <meta property="og:url" content="http://localhost:4000/making-alix-a-chrome-extension-for-linting-html">
+    <meta property="og:url" content="http://front-end.su/making-alix-a-chrome-extension-for-linting-html">
     <meta property="og:site_name" content="front-end.su">
 
     <!-- Twitter Card -->
@@ -34,7 +34,7 @@
     
     <meta name="twitter:title" content="Создание Alix, Chrome-расширения для линтинга HTML" />
     <meta name="twitter:description" content="Продолжение статьи про линтинг HTML от Ire Aderinokun" />
-    <meta name="twitter:url" content="http://localhost:4000/making-alix-a-chrome-extension-for-linting-html" />
+    <meta name="twitter:url" content="http://front-end.su/making-alix-a-chrome-extension-for-linting-html" />
 
     <!-- Icons -->
     <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
@@ -63,7 +63,7 @@
     <header class="site-header px2 px-responsive">
   <div class="mt2 wrap">
     <div class="measure">
-      <a href="http://localhost:4000" class="site-title">front-end.su</a>
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
       <nav class="site-nav">
         <a href="http://fronthub.ru">Конференция FrontHub</a>
 <a href="/contact/">Контакты</a>
@@ -129,7 +129,7 @@ img:not([alt])::after {
 
 <p>При помощи расширения легко применить таблицу стилей к любой странице. Вот как я это сделала.</p>
 
-<p>###Объявление расширения Chrome: Манифест</p>
+<h3 id="chrome-">Объявление расширения Chrome: Манифест</h3>
 
 <p>Первое, что нам нужно сделать, при создании расширения для Chrome — создать манифест-файл. Работает это так же как в случае когда мы создаем манифест-файл для прогрессивного веб приложения (PWA прим. переводчика). Файл включает в себя различную информацию, по которой Chrome определяет, что должно делать расширение и какие разрешения ему для этого необходимы.</p>
 
@@ -189,7 +189,7 @@ img:not([alt])::after {
 
 <p><code class="highlighter-rouge">web_accessible_resources</code>:  массив путей к ресурсам, которые могут использоваться на странице.</p>
 
-<p>##Создание всплывающего окна</p>
+<h2 id="section">Создание всплывающего окна</h2>
 
 <p><img src="https://bitsofco.de/content/images/2017/03/Screen-Shot-2017-03-08-at-09.32.02.png" alt="" /></p>
 
@@ -197,7 +197,7 @@ img:not([alt])::after {
 
 <p>С этой страницей мы можем делать все, что захотим, как с обычной html страницей.</p>
 
-<p>##Добавляем таблицу стилей a11y.css</p>
+<h2 id="a11ycss">Добавляем таблицу стилей a11y.css</h2>
 
 <p>Наконец, нам нужно применить к текущей активной вкладке таблицу стилей <code class="highlighter-rouge">a11y.css</code>. Для этого должен быть запущен скрипт, который создаст на странице элемент <code class="highlighter-rouge">&lt;link rel="stylsheet"&gt;</code> указывающий на необходимую таблицу стилей.</p>
 

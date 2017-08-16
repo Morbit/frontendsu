@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Evolve &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Всем привет, в программировании на js часто приходится изменять содержимое объекта, добавляя, удаляя, изменяя поля, самый простой способ это конечно же присваивание">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://front-end.su/jekyll/pixyll/2017/08/16/evolve/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201708161926" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="Evolve">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://front-end.su/jekyll/pixyll/2017/08/16/evolve/">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="Evolve" />
+    <meta name="twitter:description" content="Всем привет, в программировании на js часто приходится изменять содержимое объекта, добавляя, удаляя, изменяя поля, самый простой способ это конечно же присваивание" />
+    <meta name="twitter:url" content="http://front-end.su/jekyll/pixyll/2017/08/16/evolve/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>Evolve</h1>
+  <span class="post-meta">Aug 16, 2017</span><br>
+    
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Всем привет, в программировании на js часто приходится изменять содержимое объекта, добавляя, удаляя, изменяя поля, самый простой способ это конечно же присваивание:</p>
+
+<pre>
+<code class="js">
+obj.counter = obj.counter + 1
+</code>
+</pre>
+
+<p>Проблема тут в том, что мы мутируем исходный объект, а это никак не допустимо в рамках функционального программирования, да и вне его, например в редьюсере <code class="highlighter-rouge">redux</code> вы не увидите изменений если мутировали стейт.
+Нужно возвращать каждый раз новый объект, например с помощью спрэд оператора <code class="highlighter-rouge">...</code> в <code class="highlighter-rouge">ES6</code> (деструктурирующее присваивание если быть точнее):</p>
+
+<pre>
+<code class="js">
+const newObject = {
+  ...obj,
+  counter: obj.counter + 1,
+}
+</code>
+</pre>
+
+<p>Но с высокой вложенностью начинает происходить страшный ад на экране, с огромным каскадом и обилием трех точек =)
+Так же в популярных либах есть хелперы в виде <code class="highlighter-rouge">merge</code> функции, например из <code class="highlighter-rouge">lodash</code>:</p>
+
+<pre>
+<code class="js">
+_.merge({}, obj, { counter: obj.counter + 1 })
+</code>
+</pre>
+
+<p>Это работает очень просто, склеивает объекты слева на право, заменяя дублирующие ключи.
+Благо у нас уже есть возможность использовать нейтив инструмент из коробки: <code class="highlighter-rouge">Object.assign()</code>, делает тоже самое
+&gt; Метод Object.assign() используется для копирования значений всех собственных перечисляемых свойств из одного или более исходных объектов в целевой объект. После копирования он возвращает целевой объект.</p>
+
+<p>Писателям на реакте знакома подобная конструкция:</p>
+
+<pre>
+<code class="js">
+this.setState({ counter: this.state.counter + 1 })
+// или 
+this.setState({ show: !this.state.show })
+</code>
+</pre>
+
+<p>В целом ок, но если не нужно передать какую то вложенность объекта:</p>
+
+<pre>
+<code class="js">
+this.setState(s =&gt; ({ 
+  ...s, 
+  deep: {
+   counter: s.deep.counter + 1,
+   show: !s.deep.show,
+  }
+}))
+</code>
+</pre>
+
+<p>На мой взгляд начинает выглядеть громоздко,
+В либе <code class="highlighter-rouge">ramda</code> есть отличная функция <code class="highlighter-rouge">evolve</code>,
+Она принимает на вход 2 объекта и возвращает всегда новый;
+Ее сигнатура выглядит так: <code class="highlighter-rouge"><span class="p">{</span><span class="err">k:</span><span class="w"> </span><span class="err">(v</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="err">v)</span><span class="p">}</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="p">{</span><span class="err">k:</span><span class="w"> </span><span class="err">v</span><span class="p">}</span><span class="w"> </span><span class="err">→</span><span class="w"> </span><span class="p">{</span><span class="err">k:</span><span class="w"> </span><span class="err">v</span><span class="p">}</span></code>
+в человеческом языке так: <code class="highlighter-rouge">evolve(объектМутатор, исходныйОбъект)</code>
+Вот как она работает:</p>
+
+<pre>
+<code class="js">
+const inc = n =&gt; n + 1;
+const newObj = evolve({ counter: inc }, obj)
+</code>
+</pre>
+
+<p>что произошло? 1 аргументом мы передали объект, с теми ключами, значения которых мы хотим поменять, но вместо значений, мы передали наши функции первого класса, они же в свою очередь получат аргументом, значение из начального объекта(<code class="highlighter-rouge">исходныйОбъект</code>);
+Создадим еще примеров,</p>
+
+<pre>
+<code class="js">
+const add = a =&gt; b =&gt; a + b; // это мы помним
+const inc = add(1) // это тоже
+const dec = add(-1) 
+
+const not = b =&gt; !b; // Функция меняющая булево значение на противоположное
+// not(true) = false
+// not(false) = true
+
+
+const state = {
+    counter: 0,
+    show: false,
+}
+
+const stateTransformer = {
+    counter: inc,
+    show: not,
+}
+
+const newState = evolve(stateTransformer, state);
+// newState { counter: 1,  show: true }
+</code>
+</pre>
+
+<p>Функция <code class="highlighter-rouge">evolve</code> каррированая, а это значит что можно использовать ее так: <code class="highlighter-rouge">evolve(объектМутатор)(исходныйОбъект)</code></p>
+
+<p>Для меня в реакте это означает что я могу сделать что то в этом духе:</p>
+
+<pre>
+<code class="js">
+this.setState(evolve(stateTransformer));
+</code>
+</pre>
+
+<p>Давайте больше примеров:</p>
+<pre>
+<code class="js">
+const T = () =&gt; true; // функция возвращает true
+const F = () =&gt; false; // функция возвращает false
+const transformDecrease = { counter: dec  };
+const transformincrease = { counter: inc  };
+
+const transformToggleShow = { show: not  };
+const transformShow = { show: T };
+const transformHide = { show: F };
+
+
+const handleButtonInc = () =&gt; {
+    this.state(evolve(transformincrease))
+}
+
+const handleButtonDec = () =&gt; {
+    this.state(evolve(transformDecrease))
+}
+
+const showCounter = () =&gt; {
+    this.setState(evolve(transformShow))
+}
+// можно комбинировать трансформеры, как обычные объекты
+const showAdnInc = () =&gt; {
+    this.setState(merge(transformShow, transformincrease));
+}
+
+// или передавать в композицию:
+
+const x = pipe(
+    evolve(transformShow),
+    evolve(transformincrease),
+)
+this.setState(x);
+// тоже самое, что :
+this.setState(evolve(transformincrease, evolve(transformShow)))
+
+</code>
+</pre>
+
+<p><code class="highlighter-rouge">evolve</code> это лишь один из способов изменить объект, простой, удобный, и красивый, опять же, по моему мнению =)</p>
+
+</article>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>

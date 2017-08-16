@@ -1,0 +1,258 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>First class functions &#8211; front-end.su</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="Дарова котаны, настала пора очередной порции умных штучек.">
+    <meta name="author" content="Oleg Nayanov">
+    
+    <meta name="keywords" content=""/>
+    
+    <link rel="canonical" href="http://front-end.su/jekyll/pixyll/2017/08/16/first-class-functions/">
+    <link rel="alternate" type="application/rss+xml" title="RSS Feed for front-end.su" href="/feed.xml" />
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/css/pixyll.css?201708161926" type="text/css">
+
+    
+    <meta name='yandex-verification' content='7f003fb272100188' />
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.1.4/jquery.min.js"></script>
+
+    <!-- Open Graph -->
+    <!-- From: https://github.com/mmistakes/hpstr-jekyll-theme/blob/master/_includes/head.html -->
+    <meta property="og:locale" content="en_US">
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="First class functions">
+    <meta property="og:description" content="front-end разработка в деталях">
+    <meta property="og:url" content="http://front-end.su/jekyll/pixyll/2017/08/16/first-class-functions/">
+    <meta property="og:site_name" content="front-end.su">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary" />
+    
+    <meta name="twitter:title" content="First class functions" />
+    <meta name="twitter:description" content="Дарова котаны, настала пора очередной порции умных штучек." />
+    <meta name="twitter:url" content="http://front-end.su/jekyll/pixyll/2017/08/16/first-class-functions/" />
+
+    <!-- Icons -->
+    <link rel="apple-touch-icon" sizes="57x57" href="/apple-icon-57x57.png">
+    <link rel="apple-touch-icon" sizes="60x60" href="/apple-icon-60x60.png">
+    <link rel="apple-touch-icon" sizes="72x72" href="/apple-icon-72x72.png">
+    <link rel="apple-touch-icon" sizes="76x76" href="/apple-icon-76x76.png">
+    <link rel="apple-touch-icon" sizes="114x114" href="/apple-icon-114x114.png">
+    <link rel="apple-touch-icon" sizes="120x120" href="/apple-icon-120x120.png">
+    <link rel="apple-touch-icon" sizes="144x144" href="/apple-icon-144x144.png">
+    <link rel="apple-touch-icon" sizes="152x152" href="/apple-icon-152x152.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-icon-180x180.png">
+    <link rel="icon" type="image/png" sizes="192x192"  href="/android-icon-192x192.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96x96.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png">
+    <link rel="manifest" href="/manifest.json">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+    <meta name="theme-color" content="#ffffff">
+        
+    
+</head>
+
+<body class="site">
+  <div class="site-wrap">
+    <header class="site-header px2 px-responsive">
+  <div class="mt2 wrap">
+    <div class="measure">
+      <a href="http://front-end.su" class="site-title">front-end.su</a>
+      <nav class="site-nav">
+        <a href="http://fronthub.ru">Конференция FrontHub</a>
+<a href="/contact/">Контакты</a>
+
+      </nav>
+      <div class="clearfix"></div>
+      
+      <script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script>
+      <!-- верхний баннер -->
+      <ins class="adsbygoogle"
+           style="display:block"
+           data-ad-client="ca-pub-6780729522768984"
+           data-ad-slot="2538583428"
+           data-ad-format="auto"></ins>
+      <script>
+      (adsbygoogle = window.adsbygoogle || []).push({});
+      </script>
+    </div>
+  </div>
+</header>
+
+
+    <div class="post p2 p-responsive wrap" role="main">
+      <div class="measure">
+        
+
+
+<div class="post-header mb2">
+  <h1>First class functions</h1>
+  <span class="post-meta">Aug 16, 2017</span><br>
+    
+  <span class="post-meta small">
+  
+    3 minute read
+  
+  </span>
+</div>
+
+<article class="post-content">
+  <p>Дарова котаны, настала пора очередной порции умных штучек.
+Хочу поведать вам о частичном применении функции, чо эт и как им пользоваться.</p>
+
+<p>Для начала хочу познакомить вас с умным словом <code class="highlighter-rouge">функции первого класса</code>
+Вот выписка из вики: 
+<em>В информатике язык программирования имеет функции первого класса, если он рассматривает функции как объекты первого класса. В частности, это означает, что язык поддерживает передачу функций в качестве аргументов другим функциям, возврат их как результат других функций, присваивание их переменным или сохранение в структурах данных</em></p>
+
+<p>Давайте сразу к делу, возьмем самый сахарный пример, который естественно вы никогда не встретите в продакшене(а я вот встретил);</p>
+
+<p>представьте простую функцию которая складывает 2 числа, назовем ее add:</p>
+<pre>
+<code class="js">
+const add = (a, b) =&gt; a + b;
+add(0, 1) // 1;
+add(10, 1) // 11;
+</code>
+</pre>
+
+<p>на этом ее область применения заканчивается, функция полностью справляется со своими задачами, но давайте вколим немного стероидов в этого малыша.
+Как мы читканули с вики, функция может возвращать не только результат вычисления но и функцию, перепишем add:</p>
+<pre>
+<code class="js">
+const add = a =&gt; b =&gt; a + b;
+</code>
+</pre>
+<p>Функция add принимает 1 аргумент и возвращает функцию, которая принимает еще 1 аргумент и делает вычисление:</p>
+<pre>
+<code class="js">
+add(0)(1) // 1;
+add(10)(1) // 11;
+</code>
+</pre>
+<p>Редаксоюзеры уже узнали подобное написание? <code class="highlighter-rouge">connect(mapStateToProps)(MyComponent)</code></p>
+
+<p>Пока нихрена удобного, найдем применение:</p>
+<pre>
+<code class="js">
+const inc = add(1);
+inc(2) // 3;
+inc(5) // 6;
+inc(inc(0)) // 2;
+
+const dec = add(-1);
+dec(1) // 0;
+dec(dec(2)) // 0;
+</code>
+</pre>
+<p>мы не стали создавать новые однотипные функции, просто использовали базовую.
+Преобразование add(a,b) в add(a)(b) называется каррирование;
+Каждый раз вызывать функцию add с двумя скобками удручающе, поэтому в некоторых вспомогательных библиотеках(таких как рамда) есть понятие достаточно количество аргументов: если функция получила не достаточно аргументов то она вернет функцию ожидающее остаточные:</p>
+<pre>
+<code class="js">
+add(1, 2) === add(1)(2);
+</code>
+</pre>
+<p>Подобный подход удобен когда вы создаете композиции функций, ну или вот живой пример:
+у менять есть функция которая проверяет длину строки, и возвращает тру или фолс:</p>
+<pre>
+<code class="js">
+  const lessThan = (a, b) =&gt; a &lt; b;
+  const noLongerThan = n =&gt; s =&gt; lessThan(length(s), n);
+</code>
+</pre>
+
+<p>и я передаю функцию валидации очень просто:</p>
+<pre>
+<code class="js">
+const validate = noLongerThan(100);
+const validate2 = noLongerThan(1000);
+</code>
+</pre>
+<p>вот у меня есть 2 функции которые ожидают на вход строку и возвращают тру или фолс =)
+Еще я перелопачивал один объект в другой руками, например:</p>
+<pre>
+<code class="js">
+const A = { a:1 , b: { c: 3 }  };
+const B = { a: b.c };
+</code>
+</pre>
+<p>Это была интеграция платежки, и получаемый объект от магазина был абсолютно не похож на тот который должен был улететь в платежную систему, писать каждый раз key: a.b.c.d || null было не очень то и прикольно, на помощь пришли функции первого класса:</p>
+<pre>
+<code class="js">
+// функция pathOr получает на вход дефолтное значение, массив пути, и сам объект
+const getFromPayloadByPath = p =&gt; pathOr(null, p.split('.'), payloadObject);
+
+const sendingObject = {
+    a: getFromPayloadByPath('c.b'),
+}
+</code>
+</pre>
+<p>таких сосисок у меня было оч много, только представьте сколько инфы нужно отправить в платежную систему =)
+Не стоит боятся того, что функция может вернуть другую функцию, стоит один раз попробовать, и вы в это влюбитесь так же как и я, это поначалу кажется странным и запутанным, но стоит преодолеть свой страх и открывается чудный мир из бесконечных возможностей.
+Следующий высер обещаю написать про композицию функций справа налево и слева направо, где буду применять функции первого класса.</p>
+
+</article>
+
+
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <footer class="center">
+            <div class="measure mt1 center">
+               <small>
+front-end.su © 2015
+<br />
+               Автор шаблона <a href="http://johnotander.com">John Otander</a> (<a href="https://twitter.com/4lpine">@4lpine</a>).
+               </small>
+            </div>
+</footer>
+<!-- Yandex.Metrika counter -->
+<script type="text/javascript">
+(function (d, w, c) {
+    (w[c] = w[c] || []).push(function() {
+        try {
+            w.yaCounter23043562 = new Ya.Metrika({id:23043562,
+                    webvisor:true,
+                    clickmap:true,
+                    trackLinks:true,
+                    accurateTrackBounce:true});
+        } catch(e) { }
+    });
+
+    var n = d.getElementsByTagName("script")[0],
+        s = d.createElement("script"),
+        f = function () { n.parentNode.insertBefore(s, n); };
+    s.type = "text/javascript";
+    s.async = true;
+    s.src = (d.location.protocol == "https:" ? "https:" : "http:") + "//mc.yandex.ru/metrika/watch.js";
+
+    if (w.opera == "[object Opera]") {
+        d.addEventListener("DOMContentLoaded", f, false);
+    } else { f(); }
+})(document, window, "yandex_metrika_callbacks");
+</script>
+<noscript><div><img src="//mc.yandex.ru/watch/23043562" style="position:absolute; left:-9999px;" alt="" /></div></noscript>
+<!-- /Yandex.Metrika counter -->
+<link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/styles/default.min.css">
+<script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/8.7/highlight.min.js"></script>
+<script>
+$(document).ready(function() {
+  $('pre code').each(function(i, block) {
+    hljs.highlightBlock(block);
+  });
+});
+</script>
+</body>
+</html>
